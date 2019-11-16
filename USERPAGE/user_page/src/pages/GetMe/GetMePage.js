@@ -55,6 +55,7 @@ class GetMePage extends Component {
   };
   onHandleSubmit = event => {
     event.preventDefault();
+    this.closeDialog()
     const { newUsername, password } = this.props.values;
     const { getmeActionCreators } = this.props;
     const { changeusernameRequest } = getmeActionCreators;
@@ -66,10 +67,9 @@ class GetMePage extends Component {
     const { avatar } = getme;
     console.log("Nguyễn Việt Hoàng didmount: ", avatar)
     if (avatar !== undefined) {
-      const showAvatar = `http://35.198.209.252/api/avatars/${avatar}`;
       if (this.state.image === null) {
         this.setState({
-          image: showAvatar
+          image: avatar
         });
       }
     }
@@ -80,10 +80,9 @@ class GetMePage extends Component {
     const { avatar } = getme;
     // console.log(avatar)
     console.log("Nguyễn Việt Hoàng didupdate: ", avatar)
-    const showAvatar = `http://35.198.209.252/api/avatars/${avatar}`;
     if (this.state.image === null) {
       this.setState({
-        image: showAvatar
+        image: avatar
       });
     }
   }

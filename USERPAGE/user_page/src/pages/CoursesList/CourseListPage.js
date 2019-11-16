@@ -27,7 +27,7 @@ class CourseListPage extends Component {
     if (courses !== undefined) {
       result = courses.map((course, index) => {
         return (
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <CardItem course={course} key={index} Courses={Courses}/>
           </Grid>
         );

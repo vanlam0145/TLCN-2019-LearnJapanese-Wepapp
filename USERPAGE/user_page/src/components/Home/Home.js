@@ -22,23 +22,8 @@ class Home extends Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <Box mt={2} ml={2}>
-          <Button
-            variant="contained"
-            color="primary"
-            aria-label="Add"
-            className={classes.margin}
-          >
-            Create Course
-          </Button>
-        </Box>
-        <Box m={2}>
-          <Typography variant="h5" component="h3" align="center">
-            This is a sheet of paper.
-          </Typography>
-        </Box>
-        <Box ml={4} mr={4}>
-          <Grid container spacing={3}>
+        <Box ml={8} mr={8} mt={2}>
+          <Grid container spacing={4}>
             {this.props.children}
           </Grid>
         </Box>

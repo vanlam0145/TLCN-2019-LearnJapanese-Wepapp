@@ -20,6 +20,7 @@ const reducer = (state = initialState, action) => {
       };
     }
     case getmeConstants.GETME_SUCCESS: {
+      console.log(action.payload);
       return {
         ...state,
         errors: [],
@@ -33,11 +34,11 @@ const reducer = (state = initialState, action) => {
       toastError(action.payload);
       return { ...state };
     }
-    case getmeConstants.GETME_RESET:{
-      return{
+    case getmeConstants.GETME_RESET: {
+      return {
         ...state,
         user: []
-      }
+      };
     }
     default:
       return state;

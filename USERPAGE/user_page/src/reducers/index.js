@@ -6,6 +6,7 @@ import globalloadingReducer from "./GlobalLoading";
 import ModalUsernameReducer from "./ModalUsername";
 import getmeReducer from "./GetMe";
 import coursesReducer from "./Courses";
+import addcourseReducer from "./AddCourse";
 const rootReducer = combineReducers({
   SignIn: signinReducer,
   Client: clientReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   GlobalLoading: globalloadingReducer,
   GetMe: getmeReducer,
   ModalUsername: ModalUsernameReducer,
-  Courses: coursesReducer
+  Courses: coursesReducer,
+  AddCourse: addcourseReducer
 });
 export default rootReducer;

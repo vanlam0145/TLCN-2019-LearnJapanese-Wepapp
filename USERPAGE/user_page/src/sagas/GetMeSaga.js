@@ -33,8 +33,8 @@ function* changeavatarRequest(data) {
   const { payload } = data;
   try {
     const res = yield call(callApi, "avatars", "PUT", payload);
-    const {data}=res
-    yield put(getmeActions.getmeSuccess(data))
+    const { data } = res;
+    yield put(getmeActions.getmeSuccess(data));
     toastSuccess("Thay đổi ảnh đại diện thành công");
   } catch (err) {
     toastError("Thay đổi ảnh đại diện thất bại");
@@ -45,6 +45,8 @@ function* changeusernameRequest(data) {
   const { payload } = data;
   try {
     const res = yield call(callApi, "users/set-username", "PUT", payload);
+    const get = yield call(callApi, "users/me", "GET", null);
+    yield put(getmeActions.getmeSuccess(get.data));
     toastSuccess("Thay đổi tên thành công");
   } catch (err) {
     toastError("Thay đổi tên thất bại");

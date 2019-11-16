@@ -60,7 +60,7 @@ class index extends React.Component {
     const { signout, history } = this.props;
     this.setState({ anchorEl: null });
     this.handleMobileMenuClose();
-    signout()
+    signout();
     // <Link to="/login" />;
   };
   handleMobileMenuOpen = event => {
@@ -70,10 +70,14 @@ class index extends React.Component {
   handleMobileMenuClose = () => {
     this.setState({ mobileMoreAnchorEl: null });
   };
-  backHome=()=>{
-    const {history}=this.props
-    history.push("/")
-  }
+  backHome = () => {
+    const { history } = this.props;
+    history.push("/");
+  };
+  handleOpenAddCourses = () => {
+    const { history } = this.props;
+    history.push("/courses/addnew");
+  };
 
   render() {
     const { anchorEl, mobileMoreAnchorEl, open } = this.state;
@@ -200,12 +204,11 @@ class index extends React.Component {
                 noWrap
               >
                 <Button onClick={this.backHome}>Learning japanese</Button>
-                
               </Typography>
               <div className={classes.search}>
-                <div className={classes.searchIcon}>
+                {/* <div className={classes.searchIcon}>
                   <SearchIcon />
-                </div>
+                </div> */}
                 <InputBase
                   placeholder="Search…"
                   classes={{
@@ -213,6 +216,11 @@ class index extends React.Component {
                     input: classes.inputInput
                   }}
                 />
+              </div>
+              <div className={classes.creatCourses}>
+                <Button onClick={this.handleOpenAddCourses}>
+                  Create Courses
+                </Button>
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>

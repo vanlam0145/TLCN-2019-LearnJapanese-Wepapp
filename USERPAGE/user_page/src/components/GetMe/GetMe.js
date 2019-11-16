@@ -161,7 +161,7 @@ class GetMe extends Component {
                   </form>
                 </DialogContent>
                 <DialogActions>
-                  <Button autoFocus color="primary">
+                  <Button autoFocus color="primary" onClick={closeDialog}>
                     Cancel
                   </Button>
                   <Button
