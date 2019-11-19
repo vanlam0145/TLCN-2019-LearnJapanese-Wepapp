@@ -52,8 +52,12 @@ class GetMe extends Component {
       touched
     } = this.props;
     const { _id, username, email, create_at, avatar } = getme;
+    console.log("getme: ", getme)
     return (
       <React.Fragment>
+        <Typography component="div">
+          <Box textAlign="center" fontSize={40} mt={3} letterSpacing={2}>About Information</Box>
+        </Typography>
         <Grid container className={classes.container}>
           <Grid item xs={4} className={classes.avatar}>
             <Avatar src={image} className={classes.SizeAvatar} />
@@ -121,7 +125,7 @@ class GetMe extends Component {
                       value={newUsername}
                       label="New Username"
                       onChange={handleChange}
-                      error={errors.newUsername===undefined?false:true}
+                      error={errors.newUsername === undefined ? false : true}
                       helperText={errors.newUsername}
                       InputProps={{
                         startAdornment: (
@@ -141,7 +145,7 @@ class GetMe extends Component {
                       onChange={handleChange}
                       value={password}
                       helperText={errors.password}
-                      error={errors.password===undefined?false:true}
+                      error={errors.password === undefined ? false : true}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">

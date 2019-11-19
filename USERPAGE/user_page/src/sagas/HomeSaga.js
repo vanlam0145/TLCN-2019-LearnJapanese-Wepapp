@@ -15,6 +15,7 @@ import * as getmeActions from "../actions/GetMe";
 import callApi from "../utils/apiCaller";
 
 function* signoutRequest(payload) {
+  console.log("sign out")
   yield call(deleteToken, "token");
   payload.payload.push("/login");
   yield put(getmeActions.getmeReset());

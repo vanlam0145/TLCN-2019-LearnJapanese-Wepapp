@@ -34,21 +34,33 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Tooltip from "@material-ui/core/Tooltip";
 import CardHeader from "@material-ui/core/CardHeader";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import DeleteIcon from "@material-ui/icons/Delete";
 import DialogActions from "@material-ui/core/DialogActions";
 class AddCourse extends Component {
   renderCard = data => {
+    const {onDeleteCard}=this.props
     let xhtml = null;
     xhtml = data.map((item, index) => {
-      console.log(index);
+      console.log(item);
       return (
         <Card style={{ marginBottom: "4%" }}>
-          <CardHeader title={index + 1} />
+          <CardHeader
+            title={index + 1}
+            action={
+              <Tooltip title="Xoa the nay">
+                <IconButton>
+                  <DeleteIcon onClick={()=>onDeleteCard(index)} />
+                </IconButton>
+              </Tooltip>
+            }
+          />
           <Divider />
           <CardContent>
             <Grid container spacing={5} style={{ padding: 0 }}>
               <Grid item xs={6}>
                 <Box m={3}>
                   <TextField
+                    value={item.text}
                     name="text"
                     required
                     style={{ margin: "1%" }}
@@ -66,6 +78,7 @@ class AddCourse extends Component {
                 <Box m={3}>
                   <TextField
                     name="mean"
+                    value={item.mean}
                     required
                     style={{ margin: "1%" }}
                     fullWidth

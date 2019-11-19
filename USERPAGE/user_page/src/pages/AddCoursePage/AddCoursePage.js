@@ -35,6 +35,20 @@ class AddCoursePage extends Component {
       }
     });
   };
+  onDeleteCard = index => {
+    const test = [...this.state.data.content];
+    console.log("vi tri xoa: ", index);
+    test.splice(index, 1);
+    console.log("da xoa: ", test)
+    this.setState({
+      ...this.state,
+      data: {
+        ...this.state.data,
+        content: test
+      }
+    });
+    console.log(this.state)
+  };
   componentDidUpdate = prevProps => {
     if (prevProps.values.CourseName !== this.state.data.title) {
       const { CourseName } = this.props.values;
@@ -46,12 +60,12 @@ class AddCoursePage extends Component {
   };
   onHandleSubmit = event => {
     event.preventDefault();
-    const { AddCourseValues, addcourseActionCreators } = this.props;
+    const { AddCourseValues, addcourseActionCreators, history } = this.props;
     const { addcourseRequest } = addcourseActionCreators;
     const { dataOfCourse } = AddCourseValues;
     const { data } = this.state;
     console.log(data);
-    addcourseRequest(data);
+    addcourseRequest(data, history);
   };
   onChange = (event, index) => {
     console.log("chi so: ", index);
@@ -80,7 +94,7 @@ class AddCoursePage extends Component {
     const { AddCourseValues, handleChange } = this.props;
     const { CourseName } = this.props.values;
     const { data } = this.state;
-    const { onChange, onHandleSubmit, onAddNewCard } = this;
+    const { onChange, onHandleSubmit, onAddNewCard, onDeleteCard } = this;
     return (
       <AddCourse
         onChange={onChange}
@@ -90,6 +104,7 @@ class AddCoursePage extends Component {
         CourseName={CourseName}
         handleChange={handleChange}
         onAddNewCard={onAddNewCard}
+        onDeleteCard={onDeleteCard}
       />
     );
   }

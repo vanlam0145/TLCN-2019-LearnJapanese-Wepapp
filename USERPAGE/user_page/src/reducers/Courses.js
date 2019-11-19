@@ -1,7 +1,9 @@
 import * as coursesConstants from ".././constants/Courses";
 import { toastSuccess, toastError } from "../helper/Toastify/ToastifyHelper";
 const initialState = {
-  courses: []
+  courses: [],
+  courseDetail: {},
+  learnCourse: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,7 +14,6 @@ const reducer = (state = initialState, action) => {
       };
     }
     case coursesConstants.GETCOURSES_SUCCESS: {
-      console.log("lay khoa hoc thanh cong: ", action.payload);
       return {
         ...state,
         courses: action.payload
@@ -21,6 +22,26 @@ const reducer = (state = initialState, action) => {
     case coursesConstants.GETCOURSES_ERROR: {
       toastError(action.payload);
       return { ...state };
+    }
+    case coursesConstants.GETCOURSEDETAILS_SUCCESS: {
+      const { payload } = action;
+      return {
+        ...state,
+        courseDetail: payload
+        //Gan mot object moi mang ten la payload vao trong courseDetail
+        // courseDetail: {
+        //   ...state.courseDetail,
+        //   payload
+        // }
+      };
+    }
+    case coursesConstants.LEARNCOURSE_SUCCESS:{
+      console.log("abc: ", action.payload)
+      const {payload}=action
+      return {
+        ...state,
+        learnCourse: payload
+      }
     }
     default:
       return state;

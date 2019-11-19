@@ -16,15 +16,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { Link, withRouter } from "react-router-dom";
 class CardItem extends Component {
   render() {
-    const { course, classes, Courses } = this.props;
+    const { course, classes, Courses, onDelete } = this.props;
     const length = course.contents.length;
-    console.log(Courses);
     return (
       <React.Fragment>
-        <Link
-          style={{ textDecoration: "none" }}
-          to={"/courses/" + course._id}
-        >
+        <Link style={{ textDecoration: "none" }} to={"/courses/" + course._id}>
           <Card>
             <CardHeader
               avatar={<Avatar src={Courses.courses.avatar}></Avatar>}
@@ -38,6 +34,9 @@ class CardItem extends Component {
             <CardContent>
               <Grid container spacing={5}>
                 <Box ml={9.5}>
+                  <Typography component="h3">
+                    Tên khoá học: {course.title}
+                  </Typography>
                   <Typography component="h4">{length} thuật ngữ</Typography>
                 </Box>
               </Grid>
@@ -61,4 +60,4 @@ class CardItem extends Component {
   }
 }
 
-export default (CardItem);
+export default CardItem;

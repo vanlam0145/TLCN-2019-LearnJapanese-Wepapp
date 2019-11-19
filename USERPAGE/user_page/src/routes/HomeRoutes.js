@@ -4,6 +4,7 @@ import checkAuthen from "../helper/CheckToken/CheckToken";
 import SignInPage from "../pages/SignIn/SignInPage";
 import HomePage from "../pages/CoursesList/CourseListPage";
 import AddCoursePage from "../pages/AddCoursePage/AddCoursePage";
+import CourseDetailPage from "../pages/CourseDetailPage/CourseDetailPage";
 import Test from "../components/CardItemDetail/CardItemDetail";
 import Test2 from "../components/test";
 const routes = [
@@ -16,7 +17,7 @@ const routes = [
   {
     path: "/courses/:id",
     exact: false,
-    main: () => <Test />
+    main: () => <CourseDetailPage />
   },
   {
     path: "/getme",

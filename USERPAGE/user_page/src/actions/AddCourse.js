@@ -5,10 +5,10 @@ export const addCourse = (data, title) => {
     payload: {data, title}
   };
 };
-export const addcourseRequest = data => {
+export const addcourseRequest = (data, history) => {
   return {
     type: addcourseConstants.ADDCOURSE_REQUEST,
-    payload: data
+    payload: {data, history}
   };
 };
 export const addcourseSuccess = success => {
