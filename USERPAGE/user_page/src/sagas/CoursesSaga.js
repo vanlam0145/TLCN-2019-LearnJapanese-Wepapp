@@ -2,16 +2,12 @@ import {
   call,
   put,
   takeLatest,
-  takeEvery,
-  delay,
   take,
   fork
 } from "redux-saga/effects";
 import * as coursesConstants from "../constants/Courses";
 import * as addcourseConstants from "../constants/AddCourse";
-import { showLoading, hideLoading } from "../actions/GlobalLoading";
 import * as coursesActions from "../actions/Courses";
-import * as addcourseActions from "../actions/AddCourse";
 import callApi from "../utils/apiCaller";
 import { toastSuccess, toastError } from "../helper/Toastify/ToastifyHelper";
 
@@ -20,32 +16,26 @@ function* getcoursesRequest() {
   while (true) {
     try {
       yield take(coursesConstants.GETCOURSES_REQUEST);
-      yield put(showLoading());
       const res = yield call(callApi, "users/get-courses-latest", "GET", null);
       const { data } = res;
       yield put(coursesActions.getcoursesSuccess(data));
-      console.log("du lieu cac khoa hoc nhan ve(saga): ", data);
     } catch (err) {}
-    yield delay(500);
-    yield put(hideLoading());
   }
 }
 
 //Xoa khoa hoc duoc chon
 function* deletecourseRequest(data) {
-  console.log("trong saga xoa khoa hoc: ", data);
   const { id, history } = data.payload;
   try {
     yield call(callApi, `courses/${id}`, "DELETE", null);
+    yield put(coursesActions.deletecourseSuccess(id))
     history.push("/");
   } catch (err) {
-    console.log(err);
   }
 }
 
 //Tao mot khoa hoc moi
 function* addcourseRequest(dataCourse) {
-  console.log("trong saga khoa hoc: ", dataCourse.payload.data);
   const { data, history } = dataCourse.payload;
   for (var i = 0; i < data.content.length; i++) {
     if (data.content[i].text === "" || data.content[i].mean === "") {
@@ -53,7 +43,9 @@ function* addcourseRequest(dataCourse) {
     }
   }
   try {
-    yield call(callApi, "courses", "POST", data);
+    const res = yield call(callApi, "courses", "POST", data);
+    console.log("du lieu khoa hoc duoc tao la: ", res.data)
+    yield put(coursesActions.createCourse(res.data))
     history.push("/");
     toastSuccess("Tao khoa hoc thanh cong");
   } catch (err) {}

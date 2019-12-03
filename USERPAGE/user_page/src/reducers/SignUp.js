@@ -1,10 +1,6 @@
 import * as signupConstants from "../constants/SignUp";
 import { toastSuccess, toastError } from "../helper/Toastify/ToastifyHelper";
 const initialState = {
-  requesting: false,
-  successful: true,
-  messages: [],
-  errors: [],
   history: null
 };
 
@@ -19,10 +15,6 @@ const reducer = (state = initialState, action) => {
     case signupConstants.SIGNUP_REQUESTING: {
       return {
         ...state,
-        requesting: true,
-        successful: false,
-        messages: [{ body: "Signing up...", time: new Date() }],
-        error: [],
         history: action.payload.history
       };
     }

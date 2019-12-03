@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import StylesGetMe from "./StylesGetMe";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import EditAvatar from "@material-ui/icons/Edit";
@@ -17,8 +15,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import LockIcon from "@material-ui/icons/Lock";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -26,9 +22,30 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import DialogActions from "@material-ui/core/DialogActions";
 class GetMe extends Component {
   componentDidMount() {
-    const { getmeRequest } = this.props;
-    getmeRequest();
+    const { getmeRequest, getme } = this.props;
+    console.log(getme);
+    if (!getme.username) {
+      getmeRequest();
+    }
   }
+  onChangeTest = e => {
+    console.log("lay name filed: ", e);
+    // this.props.setFieldTouched(name, true, false)
+  };
+  checkDisabled = () => {
+    var result = null;
+    const { newUsername, password, errors } = this.props;
+    console.log("newUsername: ", newUsername);
+    console.log("password: ", password);
+    console.log("errors: ", errors);
+    if (newUsername === "" || password === "") {
+      result = true;
+    }
+    if (errors.newUsername || errors.password) {
+      result = true;
+    }
+    return result;
+  };
   render() {
     const {
       classes,
@@ -49,14 +66,21 @@ class GetMe extends Component {
       onHandleSubmitImage,
       errors,
       newUsername,
-      touched
+      touched,
+      handleBlur,
+      setFieldTouched
     } = this.props;
     const { _id, username, email, create_at, avatar } = getme;
-    console.log("getme: ", getme)
+    console.log("getme: ", getme);
+    console.log("touched username: ", touched.newUsername);
+    console.log("touched password: ", touched.password);
+    console.log("loi truyen tu formik: ", errors);
     return (
       <React.Fragment>
         <Typography component="div">
-          <Box textAlign="center" fontSize={40} mt={3} letterSpacing={2}>About Information</Box>
+          <Box textAlign="center" fontSize={40} mt={3} letterSpacing={2}>
+            About Information
+          </Box>
         </Typography>
         <Grid container className={classes.container}>
           <Grid item xs={4} className={classes.avatar}>
@@ -117,6 +141,7 @@ class GetMe extends Component {
                 <DialogContent>
                   <form>
                     <TextField
+                      id="newUsername"
                       fullWidth
                       style={{ marginBottom: 20 }}
                       className={classes.margin}
@@ -125,8 +150,14 @@ class GetMe extends Component {
                       value={newUsername}
                       label="New Username"
                       onChange={handleChange}
-                      error={errors.newUsername === undefined ? false : true}
-                      helperText={errors.newUsername}
+                      error={
+                        errors.newUsername && touched.newUsername ? true : false
+                      }
+                      // error={touched.newUsername ? true : false}
+                      helperText={touched.newUsername ? errors.newUsername : ""}
+                      onKeyUp={() =>
+                        setFieldTouched("newUsername", true, false)
+                      }
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -134,9 +165,12 @@ class GetMe extends Component {
                           </InputAdornment>
                         )
                       }}
-                    />
+                    ></TextField>
                     <TextField
                       fullWidth
+                      onKeyUp={() => {
+                        setFieldTouched("password", true, false);
+                      }}
                       className={classes.margin}
                       id="input-with-icon-textfield"
                       name="password"
@@ -144,8 +178,8 @@ class GetMe extends Component {
                       type={showPassword ? "text" : "password"}
                       onChange={handleChange}
                       value={password}
-                      helperText={errors.password}
-                      error={errors.password === undefined ? false : true}
+                      helperText={touched.password ? errors.password : ""}
+                      error={errors.password && touched.password ? true : false}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -173,6 +207,7 @@ class GetMe extends Component {
                     autoFocus
                     onClick={e => onHandleSubmit(e)}
                     type="submit"
+                    disabled={this.checkDisabled()}
                   >
                     Ok
                   </Button>

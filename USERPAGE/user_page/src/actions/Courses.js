@@ -77,3 +77,10 @@ export const learncourseError = error => {
     payload: error
   };
 };
+
+export const createCourse=data=>{
+  return {
+    type: coursesConstants.CREATE_COURSE,
+    payload: data
+  }
+}

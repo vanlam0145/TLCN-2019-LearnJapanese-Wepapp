@@ -24,7 +24,6 @@ function* getmeRequest() {
       const { message } = err.response.data;
       yield put(getmeActions.getmeError(message));
     }
-    yield delay(1000);
     yield put(hideLoading());
   }
 }

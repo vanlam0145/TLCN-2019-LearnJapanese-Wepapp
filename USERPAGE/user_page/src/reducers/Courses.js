@@ -1,7 +1,7 @@
 import * as coursesConstants from ".././constants/Courses";
 import { toastSuccess, toastError } from "../helper/Toastify/ToastifyHelper";
 const initialState = {
-  courses: [],
+  courses: {},
   courseDetail: {},
   learnCourse: []
 };
@@ -36,16 +36,46 @@ const reducer = (state = initialState, action) => {
       };
     }
     case coursesConstants.LEARNCOURSE_SUCCESS:{
-      console.log("abc: ", action.payload)
       const {payload}=action
       return {
         ...state,
         learnCourse: payload
       }
     }
+    case coursesConstants.DELETECOURSES_SUCCESS:{
+      const result = findIndex(state.courses.courses, action.payload)
+      const edit = [...state.courses.courses]
+      edit.splice(result, 1)
+      return {
+        ...state, 
+        courses: {...state.courses,
+        courses: edit}
+      }
+    }
+    case coursesConstants.CREATE_COURSE:{
+      console.log("1. gia tri hien co: ", state.courses)
+      console.log("2. khoa hoc muon them: ", action.payload)
+      const edit = [...state.courses.courses]
+      edit.unshift(action.payload)
+      return {
+        ...state,
+        courses: {...state.courses,
+        courses: edit}
+      }
+    }
     default:
       return state;
   }
 };
+
+const findIndex=(array, id)=>{
+  var index=null
+  for(let i=0;i<array.length;i++){
+    if(array[i]._id===id){
+      index=i
+    }
+  }
+  return index
+}
 
 export default reducer;

@@ -15,10 +15,11 @@ import * as getmeActions from "../actions/GetMe";
 import callApi from "../utils/apiCaller";
 
 function* signoutRequest(payload) {
+  yield put(getmeActions.getmeReset());
   console.log("sign out")
   yield call(deleteToken, "token");
+  yield delay(200)
   payload.payload.push("/login");
-  yield put(getmeActions.getmeReset());
 }
 function* homeWatcher() {
   //yield fork(signoutRequest);

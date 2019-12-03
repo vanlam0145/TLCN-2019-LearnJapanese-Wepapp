@@ -4,7 +4,6 @@ import {
   Switch,
   Route,
   Redirect,
-  Router,
   BrowserRouter
 } from "react-router-dom";
 //import createHistory from "history/createBrowserHistory";
@@ -15,12 +14,14 @@ import configureStore from "./redux/configureStore";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import checkAuthen from "./helper/CheckToken/CheckToken";
-import getToken from "./helper/GetToken/getToken";
+import { I18nextProvider } from 'react-i18next';
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import App from "./App";
+import i18n from './helper/Languages/i18n'
 const store = configureStore();
 ReactDOM.render(
+  <I18nextProvider i18n={i18n}>
   <Provider store={store}>
     <BrowserRouter>
       <ToastContainer />
@@ -41,7 +42,7 @@ ReactDOM.render(
         />
       </Switch>
     </BrowserRouter>
-  </Provider>,
+  </Provider></I18nextProvider>,
   document.getElementById("root")
 );
 

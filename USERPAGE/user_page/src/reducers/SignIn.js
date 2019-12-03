@@ -2,57 +2,29 @@ import * as signinConstants from ".././constants/SignIn";
 import { toastSuccess, toastError } from "../helper/Toastify/ToastifyHelper";
 import GetToken from "../helper/GetToken/getToken";
 const initialState = {
-  requesting: false,
-  successful: false,
-  messages: [],
-  errors: [],
   user: {}
 };
-
-const getCookie = cname => {
-  var name = cname + "=";
-  var ca = document.cookie.split(";");
-  console.log("1: ", ca.length);
-  for (var i = 0; i < 2; i++) {
-    var c = ca[i];
-    console.log("2: ", c);
-    while (c.charAt(0) === " ") {
-      c = c.substring(1);
-      console.log("token: ", c);
-    }
-    if (c.indexOf(name) === 0) {
-      console.log("success: ", c.substring(6));
-      return c.substring(6);
-    } else {
-      return null;
-    }
-  }
-};
-
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case signinConstants.SIGNIN_REQUEST: {
       return {
-        ...state,
-        requesting: true,
-        success: false,
-        messages: [{ body: "Logging in...", time: new Date() }],
-        errors: []
+        ...state
       };
     }
     case signinConstants.SIGNIN_SUCCESS: {
+      toastSuccess("Sign in success!")
+      const { success, remember } = action.payload;
+      const { token } = success;
       var now = new Date();
       now.setTime(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-      document.cookie = `token=${
-        action.payload.token
-      };expires=${now.toUTCString()}`;
+      if (remember === true) {
+        document.cookie = `token=${token};expires=${now.toUTCString()}`;
+      } else {
+        document.cookie = `token=${token}`;
+      }
       GetToken();
       return {
         ...state,
-        errors: [],
-        message: [],
-        requesting: false,
-        successful: true,
         user: action.payload
       };
     }

@@ -1,13 +1,17 @@
 import React from "react";
-import GetMePage from "../pages/GetMe/GetMePage";
+import GetMePage from "../pages/GetMePage";
 import checkAuthen from "../helper/CheckToken/CheckToken";
-import SignInPage from "../pages/SignIn/SignInPage";
-import HomePage from "../pages/CoursesList/CourseListPage";
-import AddCoursePage from "../pages/AddCoursePage/AddCoursePage";
-import CourseDetailPage from "../pages/CourseDetailPage/CourseDetailPage";
-import Test from "../components/CardItemDetail/CardItemDetail";
-import Test2 from "../components/test";
+import SignInPage from "../pages/SignInPage";
+import HomePage from "../pages/CourseListPage";
+import AddCoursePage from "../pages/AddCoursePage";
+import CourseDetailPage from "../pages/CourseDetailPage";
+import TopicsListPage from "../pages/TopicsListPage";
 const routes = [
+  {
+    path: "/gettopics",
+    exact: false,
+    main: () => (checkAuthen() ? <TopicsListPage /> : <SignInPage />)
+  },
   { path: "/courses/addnew", exact: false, main: () => <AddCoursePage /> },
   {
     path: "/test",

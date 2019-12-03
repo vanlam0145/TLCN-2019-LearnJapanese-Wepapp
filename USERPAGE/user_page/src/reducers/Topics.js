@@ -1,32 +1,28 @@
-import * as getmeConstants from ".././constants/GetMe";
+import * as topicsConstants from ".././constants/Topics";
 import { toastSuccess, toastError } from "../helper/Toastify/ToastifyHelper";
 const initialState = {
-  user: {}
+  topics: {}
+  //   courseDetail: {},
+  //   learnCourse: []
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case getmeConstants.GETME_REQUEST: {
+    case topicsConstants.GET_TOPICS_REQUEST: {
       return {
-        ...state,
+        ...state
       };
     }
-    case getmeConstants.GETME_SUCCESS: {
-      console.log(action.payload);
+    case topicsConstants.GET_TOPICS_SUCCESS: {
+      console.log("nhan ve cac topics: ", action.payload);
       return {
         ...state,
-        user: action.payload
+        topics: action.payload
       };
     }
-    case getmeConstants.GETME_ERROR: {
+    case topicsConstants.GET_TOPICS_ERROR: {
       toastError(action.payload);
       return { ...state };
-    }
-    case getmeConstants.GETME_RESET: {
-      return {
-        ...state,
-        user: {}
-      };
     }
     default:
       return state;
