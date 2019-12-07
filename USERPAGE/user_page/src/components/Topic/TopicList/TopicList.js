@@ -17,44 +17,32 @@ import { Link, withRouter } from "react-router-dom";
 class CourseItem extends Component {
   render() {
     const { course, classes, Courses, onDelete } = this.props;
-    const length = course.contents.length;
     return (
       <React.Fragment>
-        <Link style={{ textDecoration: "none" }} to={"/courses/" + course._id}>
-          <Card>
-            <CardHeader
-              avatar={<Avatar src={Courses.courses.avatar}></Avatar>}
-              title={Courses.courses.username}
-              subheader={"Created day: " + `${Courses.courses.create_at}`}
-            />
-            <CardMedia
-              image="../../assets/loading.gif"
-              title="Your custom image"
-            />
-            <CardContent>
-              <Grid container spacing={5}>
-                <Box ml={9.5}>
-                  <Typography component="h3">
-                    Tên khoá học: {course.title}
-                  </Typography>
-                  <Typography component="h4">{length} thuật ngữ</Typography>
-                </Box>
-              </Grid>
-            </CardContent>
-            {/* <CardActions>
-            <Tooltip title="Edit your content">
-              <IconButton>
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete your course">
-              <IconButton>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          </CardActions> */}
-          </Card>
-        </Link>
+        <Box ml={20} mr={20} mt={2}>
+          <Typography
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "2%",
+              textTransform: "uppercase",
+            }}
+            variant="h5"
+          >
+            Danh sách chủ đề học
+          </Typography>
+          <Grid
+            container
+            spacing={4}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              height: "80vh"
+            }}
+          >
+            {this.props.children}
+          </Grid>
+        </Box>
       </React.Fragment>
     );
   }

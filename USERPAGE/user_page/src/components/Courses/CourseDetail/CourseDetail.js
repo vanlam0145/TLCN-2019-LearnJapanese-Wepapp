@@ -16,19 +16,25 @@ import Tooltip from "@material-ui/core/Tooltip";
 import MobileStepper from "@material-ui/core/MobileStepper";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
+import SpeakIcon from "@material-ui/icons/VolumeUp";
 import Tab from "@material-ui/core/Tab";
 import BookIcon from "@material-ui/icons/Book";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import RightIcon from "@material-ui/icons/CheckCircle";
+import WrongIcon from "@material-ui/icons/Cancel";
 import Speech from "speak-tts";
 const theme = () => {};
 class CourseDetail extends Component {
   state = {
     value: 0,
     activeStep: 0,
-    activeStepLearn: 0
+    activeStepLearn: 0,
+    showResult: 0,
+    indexHover: false,
+    indexAnswer: null
   };
-  onSpeak = (word) => {
-    console.log(word)
+  onSpeak = word => {
+    console.log(word);
     const speech = new Speech();
     speech.setLanguage("ja-JP");
     speech.setRate(0.7);
@@ -40,22 +46,48 @@ class CourseDetail extends Component {
   checkAnswer = index => {
     const { learnCourse } = this.props;
     const { activeStepLearn } = this.state;
+    console.log("cc: ", learnCourse.length);
+    console.log("cc2: ", activeStepLearn);
     console.log("ket qua la: ", learnCourse[activeStepLearn].answer_id);
     console.log("dap an chon la: ", index);
     console.log("do dai: ", learnCourse[activeStepLearn]);
     if (learnCourse[activeStepLearn].answer_id === index) {
-      if (activeStepLearn < learnCourse[activeStepLearn].answers.length) {
-        this.handleNextLearn();
+      if (activeStepLearn < learnCourse.length - 1) {
+        this.setState({ showResult: 1, indexHover: true, indexAnswer: index });
       } else {
         alert("Da hoan thanh");
       }
+    } else {
+      this.setState({
+        showResult: 2
+      });
     }
   };
   renderAnswers = answers => {
+    const { indexHover, indexAnswer } = this.state;
+    const { classes } = this.props;
     let xhtml = null;
     xhtml = answers.map((answer, index) => {
       return (
-        <Button onClick={() => this.checkAnswer(index)}>{`${answer}`}</Button>
+        <Box style={{ textAlign: "center" }}>
+          <Button
+            onClick={() => this.checkAnswer(index)}
+            style={{ margin: "2%" }}
+            className={`${classes.answerHover} ${index===indexAnswer?classes.answer:""}`}
+            //className={index===indexAnswer?classes.answer:""}
+            disabled={indexHover === true ? true : false}
+          >
+            <Paper
+              style={{
+                height: "25vh",
+                width: "25vw",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >{`${answer}`}</Paper>
+          </Button>
+        </Box>
       );
     });
     return xhtml;
@@ -67,13 +99,10 @@ class CourseDetail extends Component {
     if (questions.length !== 0) {
       xhtml = (
         <React.Fragment>
-          <Box>
-            <Typography>{`question ${activeStepLearn + 1}: ${
+          <Box style={{ textAlign: "center", marginTop: "3%" }}>
+            <Typography>{`Câu hỏi ${activeStepLearn + 1}: ${
               questions[activeStepLearn].question
             }?`}</Typography>
-            <Box mt={3}>
-              {this.renderAnswers(questions[activeStepLearn].answers)}
-            </Box>
           </Box>
         </React.Fragment>
       );
@@ -130,6 +159,29 @@ class CourseDetail extends Component {
     }
     return xhtml;
   };
+  renderShowResult = () => {
+    let xhtml = null;
+    if (this.state.showResult === 1) {
+      xhtml = (
+        <React.Fragment>
+          <Box style={{ display: "flex", justifyContent: "center" }}>
+            <RightIcon style={{ color: "green" }} />
+            <Button onClick={() => this.handleNextLearn()}>Tiếp tục</Button>
+          </Box>
+        </React.Fragment>
+      );
+    }
+    if (this.state.showResult === 2) {
+      xhtml = (
+        <React.Fragment>
+          <Box style={{ textAlign: "center" }}>
+            <WrongIcon style={{ color: "red" }} />
+          </Box>
+        </React.Fragment>
+      );
+    }
+    return xhtml;
+  };
   handleNext = () => {
     this.setState(prevState => ({
       activeStep: prevState.activeStep + 1
@@ -141,6 +193,7 @@ class CourseDetail extends Component {
     }));
   };
   handleNextLearn = () => {
+    this.setState({ showResult: 0, indexHover: false, indexAnswer: null });
     this.setState(prevState => ({
       activeStepLearn: prevState.activeStepLearn + 1
     }));
@@ -252,9 +305,11 @@ class CourseDetail extends Component {
                         alignItems: "center"
                       }}
                     >
-                      <IconButton onClick={()=>onSpeak(contents[activeStep].text)}>
+                      <IconButton
+                        onClick={() => onSpeak(contents[activeStep].text)}
+                      >
                         <Tooltip title="Phát âm">
-                          <AccountCircle />
+                          <SpeakIcon />
                         </Tooltip>
                       </IconButton>
                     </div>
@@ -296,49 +351,28 @@ class CourseDetail extends Component {
                 </Box>
               </TabContainer>
             )}
+
+            {/* tab hoc */}
             {value === 1 && (
               <div
                 style={{
                   backgroundColor: "white",
-                  height: "50vh",
-                  width: "30vw"
+                  height: "90%",
+                  width: "90%"
                 }}
               >
                 {this.renderQuestions(learnCourse)}
-                <MobileStepper
-                  steps={maxSteps}
-                  position="static"
-                  activeStep={activeStepLearn}
-                  className={classes.mobileStepper}
-                  nextButton={
-                    <Button
-                      size="small"
-                      onClick={this.handleNextLearn}
-                      disabled={activeStepLearn === maxSteps - 1}
-                    >
-                      Next
-                      {theme.direction === "rtl" ? (
-                        <KeyboardArrowLeft />
-                      ) : (
-                        <KeyboardArrowRight />
-                      )}
-                    </Button>
-                  }
-                  backButton={
-                    <Button
-                      size="small"
-                      onClick={this.handleBackLearn}
-                      disabled={activeStepLearn === 0}
-                    >
-                      {theme.direction === "rtl" ? (
-                        <KeyboardArrowRight />
-                      ) : (
-                        <KeyboardArrowLeft />
-                      )}
-                      Back
-                    </Button>
-                  }
-                />
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  {this.renderAnswers(learnCourse[activeStepLearn].answers)}
+                </div>
+                <div style={{ marginTop: "3%" }}>{this.renderShowResult()}</div>
               </div>
             )}
           </Grid>

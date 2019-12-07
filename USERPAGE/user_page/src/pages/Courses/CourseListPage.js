@@ -6,10 +6,10 @@ import { withRouter } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import * as coursesActions from "../actions/Courses";
+import * as coursesActions from "../../actions/Courses";
 import Grid from "@material-ui/core/Grid";
-import Home from "../components/Home/Home";
-import CourseItem from "../components/Courses/CourseItem/CourseItem";
+import Home from "../../components/Home/Home";
+import CourseItem from "../../components/Courses/CourseItem/CourseItem";
 
 class CourseListPage extends Component {
   componentDidMount() {

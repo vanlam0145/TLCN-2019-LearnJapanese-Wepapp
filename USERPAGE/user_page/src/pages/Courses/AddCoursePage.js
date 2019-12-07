@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
-import * as addcourseActions from "../actions/AddCourse";
+import * as addcourseActions from "../../actions/AddCourse";
 import Grid from "@material-ui/core/Grid";
-import Home from "../components/Home/Home";
+import Home from "../../components/Home/Home";
 import { withFormik } from "formik";
 import * as Yup from "yup";
-import AddCourse from "../components/Courses/AddCourse/AddCourse";
+import AddCourse from "../../components/Courses/AddCourse/AddCourse";
 
 class AddCoursePage extends Component {
   constructor(props) {

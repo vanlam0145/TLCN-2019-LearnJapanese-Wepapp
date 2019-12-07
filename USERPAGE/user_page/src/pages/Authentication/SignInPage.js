@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
-import SignIn from "../components/Authentication/SignIn/SignIn";
-import checkAuthen from "../helper/CheckToken/CheckToken";
-import * as signinActions from "../actions/SignIn";
+import SignIn from "../../components/Authentication/SignIn/SignIn";
+import checkAuthen from "../../helper/CheckToken/CheckToken";
+import * as signinActions from "../../actions/SignIn";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 class SignInPage extends Component {

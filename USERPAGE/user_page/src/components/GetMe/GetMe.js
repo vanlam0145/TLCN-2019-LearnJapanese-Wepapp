@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import StylesGetMe from "./StylesGetMe";
 import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
 import EditAvatar from "@material-ui/icons/Edit";
 import Button from "@material-ui/core/Button";
 import SaveAvatar from "@material-ui/icons/Save";
@@ -20,6 +18,25 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Tooltip from "@material-ui/core/Tooltip";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import DialogActions from "@material-ui/core/DialogActions";
+import classnames from "classnames";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
+import red from "@material-ui/core/colors/red";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 class GetMe extends Component {
   componentDidMount() {
     const { getmeRequest, getme } = this.props;
@@ -71,19 +88,59 @@ class GetMe extends Component {
       setFieldTouched
     } = this.props;
     const { _id, username, email, create_at, avatar } = getme;
-    console.log("getme: ", getme);
+    console.log("getme: ", image);
     console.log("touched username: ", touched.newUsername);
     console.log("touched password: ", touched.password);
     console.log("loi truyen tu formik: ", errors);
     return (
       <React.Fragment>
-        <Typography component="div">
-          <Box textAlign="center" fontSize={40} mt={3} letterSpacing={2}>
-            About Information
-          </Box>
-        </Typography>
-        <Grid container className={classes.container}>
-          <Grid item xs={4} className={classes.avatar}>
+        <Grid
+          container
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "1%"
+          }}
+        >
+          <Card style={{ maxWidth: "600px", minWidth: "600px" }}>
+            <CardHeader
+              avatar={<Avatar src={image} />}
+              action={
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              title={username}
+              subheader={create_at}
+            />
+            <CardContent>
+              <Table className={classes.table} aria-label="simple table">
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="right">email</TableCell>
+                    <TableCell align="right">{email}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="right">email</TableCell>
+                    <TableCell align="right">{email}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="right">email</TableCell>
+                    <TableCell align="right">{email}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+            <CardActions className={classes.actions} disableActionSpacing>
+              <IconButton aria-label="Add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton aria-label="Share">
+                <ShareIcon />
+              </IconButton>
+            </CardActions>
+          </Card>
+          {/* <Grid item xs={4} className={classes.avatar}>
             <Avatar src={image} className={classes.SizeAvatar} />
             <Box>
               <Tooltip title="Edit Avatar">
@@ -220,7 +277,7 @@ class GetMe extends Component {
             <Typography className={classes.UserInfor} variant="h5">
               created day: {create_at}
             </Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
       </React.Fragment>
     );

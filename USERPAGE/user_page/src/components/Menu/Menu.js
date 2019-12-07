@@ -137,7 +137,7 @@ class index extends React.Component {
           </IconButton>
           <p>Aplabet</p>
         </MenuItem>
-        <MenuItem onClick={this.handleProfileMenuOpen}>
+        <MenuItem onClick={handleOpenTopics}>
           <IconButton color="inherit">
             <TopicsIcon />
           </IconButton>

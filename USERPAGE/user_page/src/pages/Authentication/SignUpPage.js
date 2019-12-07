@@ -4,8 +4,8 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators, compose } from "redux";
-import SignUp from "../components/Authentication/SignUp/SignUp";
-import * as signupActions from "../actions/SignUp";
+import SignUp from "../../components/Authentication/SignUp/SignUp";
+import * as signupActions from "../../actions/SignUp";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 class SignUpPage extends Component {

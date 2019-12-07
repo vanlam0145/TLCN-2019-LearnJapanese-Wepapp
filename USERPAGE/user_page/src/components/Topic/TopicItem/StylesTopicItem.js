@@ -29,6 +29,11 @@ const styles = theme => ({
     ButtonChangeUsername: {
       marginTop: "-1.5%",
       marginLeft: 10
+    },
+    cardHover: {
+      "&:hover":{
+        boxShadow: "1px 0px 11px 10px rgba(63, 81, 181, 0.3)"
+      }
     }
   });
   

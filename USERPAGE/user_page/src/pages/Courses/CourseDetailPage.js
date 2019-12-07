@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
-import * as coursesActions from "../actions/Courses";
+import * as coursesActions from "../../actions/Courses";
 import Grid from "@material-ui/core/Grid";
-import Home from "../components/Home/Home";
-import CourseItem from "../components/Courses/CourseItem/CourseItem";
-import CourseDetail from "../components/Courses/CourseDetail/CourseDetail";
+import Home from "../../components/Home/Home";
+import CourseItem from "../../components/Courses/CourseItem/CourseItem";
+import CourseDetail from "../../components/Courses/CourseDetail/CourseDetail";
 
 class CourseDetailPage extends Component {
   async componentDidMount() {

@@ -12,6 +12,7 @@
     "i18next": "^19.0.1",
     "lodash": "^4.17.15",
     "material-table": "^1.54.1",
+    "material-ui-flat-pagination": "^4.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
