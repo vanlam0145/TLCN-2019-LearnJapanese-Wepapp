@@ -12,9 +12,9 @@ export const signinError = error => {
       payload: {data, history}
     };
   };
-  export const signinSuccess = success => {
+  export const signinSuccess = (success, remember) => {
     return {
       type: signinConstants.SIGNIN_SUCCESS,
-      payload: success
+      payload: {success, remember}
     };
   };

@@ -1,38 +1,35 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
-import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import Divider from "@material-ui/core/Divider";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItemText from "@material-ui/core/ListItemText";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import AddIcon from "@material-ui/icons/LibraryAdd";
 import StylesMenu from "./StylesMenu";
-import Drawer from "@material-ui/core/Drawer";
+import Tooltip from "@material-ui/core/Tooltip";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import ArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import Grow from "@material-ui/core/Grow";
+import MenuList from "@material-ui/core/MenuList";
+import SearchIcon from "@material-ui/icons/Search";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import TopicsIcon from "@material-ui/icons/MenuBook";
+import Speech from "speak-tts";
 
 class index extends React.Component {
   state = {
-    anchorEl: null,
+    anchorEl_Alphabet: null,
+    anchorEl_Profile: null,
     mobileMoreAnchorEl: null,
-    open: null
+    open: false,
+    openProfile: false
   };
   handleDrawerOpen = event => {
     this.setState({ open: true });
@@ -43,25 +40,31 @@ class index extends React.Component {
   };
 
   handleProfileMenuOpen = event => {
-    this.setState({ anchorEl: event.currentTarget });
+    console.log("click here")
+    const { currentTarget } = event;
+    this.setState(state => ({
+      anchorEl_Profile: currentTarget,
+      openProfile: !state.openProfile
+    }));
   };
-
+  handleProfileMenuClose = () => {
+    this.setState(state => ({ openProfile: false, anchorEl_Profile: null }));
+  };
   handleMenuClose = () => {
-    this.setState({ anchorEl: null });
+    this.setState({ anchorEl_Profile: null });
     this.handleMobileMenuClose();
   };
   handleOpenProfile = () => {
     const { history } = this.props;
-    this.setState({ anchorEl: null });
+    this.setState({ openProfile: false });
     this.handleMobileMenuClose();
     history.push("/getme");
   };
   handleSignOut = () => {
-    const { signout, history } = this.props;
-    this.setState({ anchorEl: null });
+    const { signout } = this.props;
+    this.setState({ openProfile: false });
     this.handleMobileMenuClose();
     signout();
-    // <Link to="/login" />;
   };
   handleMobileMenuOpen = event => {
     this.setState({ mobileMoreAnchorEl: event.currentTarget });
@@ -78,33 +81,40 @@ class index extends React.Component {
     const { history } = this.props;
     history.push("/courses/addnew");
   };
-
+  handleToggle = event => {
+    const { currentTarget } = event;
+    this.setState(state => ({
+      anchorEl_Alphabet: currentTarget,
+      open: !state.open
+    }));
+  };
+  handleClose = () => {
+    this.setState({ open: false, anchorEl_Alphabet: null });
+  };
+  handleOpenTopics = () => {
+    const { history } = this.props;
+    history.push("/gettopics");
+  };
+  onSpeak = () => {
+    const speech = new Speech();
+    speech.setLanguage("ja-JP");
+    speech.setRate(0.7);
+    speech.setPitch(1.4);
+    speech.speak({
+      text: "こんにちは、ホアンです。ベトナム出身です。はじめまして。"
+    });
+  };
   render() {
-    const { anchorEl, mobileMoreAnchorEl, open } = this.state;
-    const { classes, theme, signout } = this.props;
-    const isMenuOpen = Boolean(anchorEl);
+    const { mobileMoreAnchorEl, open, openProfile } = this.state;
+    const { classes } = this.props;
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-    const renderMenu = (
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center"
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center"
-        }}
-        open={isMenuOpen}
-        onClose={this.handleMenuClose}
-        className={classes.Menu}
-      >
-        <MenuItem onClick={this.handleOpenProfile}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
-        <MenuItem onClick={this.handleSignOut}>Sign out</MenuItem>
-      </Menu>
-    );
+    const {
+      handleOpenAddCourses,
+      handleOpenTopics,
+      handleProfileMenuOpen,
+      handleToggle
+    } = this;
+    const isTest=Boolean(this.state.anchorEl_Profile)
 
     const renderMobileMenu = (
       <Menu
@@ -115,29 +125,91 @@ class index extends React.Component {
         open={isMobileMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMobileMenuClose}>
+        <MenuItem onClick={handleOpenAddCourses}>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <MailIcon />
-            </Badge>
+            <AddIcon />
           </IconButton>
-          <p>Messages</p>
+          <p>Tạo khoá học</p>
         </MenuItem>
-        <MenuItem onClick={this.handleMobileMenuClose}>
+        <MenuItem onClick={handleToggle}>
           <IconButton color="inherit">
-            <Badge badgeContent={11} color="secondary">
-              <NotificationsIcon />
-            </Badge>
+            <ArrowDownIcon />
           </IconButton>
-          <p>Notifications</p>
+          <p>Aplabet</p>
         </MenuItem>
-        <MenuItem onClick={this.handleProfileMenuOpen}>
+        <MenuItem onClick={handleOpenTopics}>
+          <IconButton color="inherit">
+            <TopicsIcon />
+          </IconButton>
+          <p>Chủ đề học</p>
+        </MenuItem>
+        <MenuItem onClick={handleProfileMenuOpen}>
           <IconButton color="inherit">
             <AccountCircle />
           </IconButton>
-          <p>Profile</p>
+          <p>Thông tin cá nhân</p>
         </MenuItem>
       </Menu>
+    );
+    const renderProfile = (
+      <Popper
+        open={isTest}
+        anchorEl={this.state.anchorEl_Profile}
+        transition
+        disablePortal
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            id="menu-list-grow"
+            style={{
+              transformOrigin: {
+                vertical: "center"
+              }
+            }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={this.handleProfileMenuClose}>
+                <MenuList>
+                  <MenuItem onClick={this.handleOpenProfile}>Thông tin cá nhân</MenuItem>
+                  <MenuItem onClick={this.handleSignOut}>Đăng xuất</MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+      // <Menu
+      //   anchorEl={this.state.anchorEl_Profile}
+      //   anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      //   open={isTest}
+      //   onClose={this.handleMenuClose}
+      // >
+      //   <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
+      //   <MenuItem onClick={this.handleMenuClose}>Sign out</MenuItem>
+      // </Menu>
+    );
+    const renderAlphabet = (
+      <Popper
+        open={open}
+        anchorEl={this.state.anchorEl_Alphabet}
+        transition
+        disablePortal
+        placement="bottom"
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow {...TransitionProps} id="menu-list-grow">
+            <Paper>
+              <ClickAwayListener onClickAway={this.handleClose}>
+                <MenuList>
+                  <MenuItem onClick={this.handleClose}>Hiragana</MenuItem>
+                  <MenuItem onClick={this.handleClose}>Katakana</MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
     );
 
     return (
@@ -145,70 +217,20 @@ class index extends React.Component {
         <div className={classes.root}>
           <AppBar position="static">
             <Toolbar>
-              <IconButton
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Drawer
-                elevation="10"
-                variant="persistent"
-                anchor="left"
-                open={open}
-                ModalProps={{ onBackdropClick: this.toggleDrawer }}
-                classes={{
-                  paper: classes.drawerPaper
-                }}
-              >
-                <div className={classes.drawerHeader}>
-                  <IconButton onClick={this.handleDrawerClose}>
-                    {theme.direction === "ltr" ? (
-                      <ChevronLeftIcon />
-                    ) : (
-                      <ChevronRightIcon />
-                    )}
-                  </IconButton>
-                </div>
-                <Divider />
-                <List>
-                  {["Inbox", "Starred", "Send email", "Drafts"].map(
-                    (text, index) => (
-                      <ListItem button key={text}>
-                        <ListItemIcon>
-                          {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                      </ListItem>
-                    )
-                  )}
-                </List>
-                <Divider />
-                <List>
-                  {["All mail", "Trash", "Spam"].map((text, index) => (
-                    <ListItem button key={text}>
-                      <ListItemIcon>
-                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                      </ListItemIcon>
-                      <ListItemText primary={text} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Drawer>
               <Typography
                 className={classes.title}
-                variant="h6"
+                component="h4"
                 color="inherit"
                 noWrap
               >
-                <Button onClick={this.backHome}>Learning japanese</Button>
+                <Button onClick={this.backHome} style={{ color: "white" }}>
+                  Learn japanese
+                </Button>
               </Typography>
               <div className={classes.search}>
-                {/* <div className={classes.searchIcon}>
+                <div className={classes.searchIcon}>
                   <SearchIcon />
-                </div> */}
+                </div>
                 <InputBase
                   placeholder="Search…"
                   classes={{
@@ -217,32 +239,46 @@ class index extends React.Component {
                   }}
                 />
               </div>
-              <div className={classes.creatCourses}>
-                <Button onClick={this.handleOpenAddCourses}>
-                  Create Courses
-                </Button>
-              </div>
               <div className={classes.grow} />
+
+              {/* Phia ben phai cua thanh menu */}
               <div className={classes.sectionDesktop}>
-                <IconButton color="inherit">
-                  <Badge badgeContent={4} color="secondary">
-                    <MailIcon />
-                  </Badge>
-                </IconButton>
-                <IconButton color="inherit">
-                  <Badge badgeContent={17} color="secondary">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
-                <IconButton
-                  aria-owns={isMenuOpen ? "material-appbar" : undefined}
-                  aria-haspopup="true"
-                  onClick={this.handleProfileMenuOpen}
-                  color="inherit"
+                <Button
+                  className={classes.menuButton}
+                  onClick={handleOpenAddCourses}
                 >
-                  <AccountCircle />
+                  <AddIcon />
+                  &ensp; Tạo khoá học
+                </Button>
+                <Button onClick={handleToggle} className={classes.menuButton}>
+                  Alphabet {<ArrowDownIcon />}
+                </Button>
+                <Button
+                  onClick={handleOpenTopics}
+                  className={classes.menuButton}
+                >
+                  <TopicsIcon />
+                  &ensp; Chủ đề học
+                </Button>
+                <IconButton
+                  onClick={handleProfileMenuOpen}
+                  className={classes.menuButton}
+                >
+                  <Tooltip title="Trang cá nhân">
+                    <AccountCircle />
+                  </Tooltip>
                 </IconButton>
               </div>
+
+              {/* tts */}
+              {/* <div
+                className={classes.systemCourses}
+                style={{ marginLeft: "5%" }}
+              >
+                <Button onClick={this.onSpeak} className={classes.menuButton}>
+                  {<TopicsIcon />}&ensp; tts
+                </Button>
+              </div> */}
               <div className={classes.sectionMobile}>
                 <IconButton
                   aria-haspopup="true"
@@ -254,8 +290,9 @@ class index extends React.Component {
               </div>
             </Toolbar>
           </AppBar>
-          {renderMenu}
           {renderMobileMenu}
+          {renderProfile}
+          {renderAlphabet}
         </div>
       </div>
     );

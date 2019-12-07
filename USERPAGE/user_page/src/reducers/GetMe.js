@@ -1,10 +1,6 @@
 import * as getmeConstants from ".././constants/GetMe";
 import { toastSuccess, toastError } from "../helper/Toastify/ToastifyHelper";
 const initialState = {
-  requesting: false,
-  successful: false,
-  messages: [],
-  errors: [],
   user: {}
 };
 
@@ -13,20 +9,12 @@ const reducer = (state = initialState, action) => {
     case getmeConstants.GETME_REQUEST: {
       return {
         ...state,
-        requesting: true,
-        success: false,
-        messages: [{ body: "Logging in...", time: new Date() }],
-        errors: []
       };
     }
     case getmeConstants.GETME_SUCCESS: {
       console.log(action.payload);
       return {
         ...state,
-        errors: [],
-        message: [],
-        requesting: false,
-        successful: true,
         user: action.payload
       };
     }
@@ -37,7 +25,7 @@ const reducer = (state = initialState, action) => {
     case getmeConstants.GETME_RESET: {
       return {
         ...state,
-        user: []
+        user: {}
       };
     }
     default:

@@ -9,8 +9,6 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case addcoursesConstants.ADD_WORD:
-      console.log("trong reducer: ", action.payload);
-      console.log("trong reducer 1: ", state.dataOfCourse);
       return {
         ...state,
         dataOfCourse: {

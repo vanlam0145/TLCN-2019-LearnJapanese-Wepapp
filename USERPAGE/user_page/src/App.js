@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core";
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import styles from "./styles";
-import Menu from "./pages/Nav/Nav";
+import Menu from "./pages/MenuPage";
 import routes from "./routes/HomeRoutes";
 class App extends Component {
   showContentMenus = routes => {

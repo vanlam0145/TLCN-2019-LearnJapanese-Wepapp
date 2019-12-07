@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import StylesGetMe from "./StylesGetMe";
 import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
 import EditAvatar from "@material-ui/icons/Edit";
 import Button from "@material-ui/core/Button";
 import SaveAvatar from "@material-ui/icons/Save";
@@ -17,18 +13,56 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import LockIcon from "@material-ui/icons/Lock";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Tooltip from "@material-ui/core/Tooltip";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import DialogActions from "@material-ui/core/DialogActions";
+import classnames from "classnames";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
+import red from "@material-ui/core/colors/red";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 class GetMe extends Component {
   componentDidMount() {
-    const { getmeRequest } = this.props;
-    getmeRequest();
+    const { getmeRequest, getme } = this.props;
+    console.log(getme);
+    if (!getme.username) {
+      getmeRequest();
+    }
   }
+  onChangeTest = e => {
+    console.log("lay name filed: ", e);
+    // this.props.setFieldTouched(name, true, false)
+  };
+  checkDisabled = () => {
+    var result = null;
+    const { newUsername, password, errors } = this.props;
+    console.log("newUsername: ", newUsername);
+    console.log("password: ", password);
+    console.log("errors: ", errors);
+    if (newUsername === "" || password === "") {
+      result = true;
+    }
+    if (errors.newUsername || errors.password) {
+      result = true;
+    }
+    return result;
+  };
   render() {
     const {
       classes,
@@ -49,13 +83,64 @@ class GetMe extends Component {
       onHandleSubmitImage,
       errors,
       newUsername,
-      touched
+      touched,
+      handleBlur,
+      setFieldTouched
     } = this.props;
     const { _id, username, email, create_at, avatar } = getme;
+    console.log("getme: ", image);
+    console.log("touched username: ", touched.newUsername);
+    console.log("touched password: ", touched.password);
+    console.log("loi truyen tu formik: ", errors);
     return (
       <React.Fragment>
-        <Grid container className={classes.container}>
-          <Grid item xs={4} className={classes.avatar}>
+        <Grid
+          container
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "1%"
+          }}
+        >
+          <Card style={{ maxWidth: "600px", minWidth: "600px" }}>
+            <CardHeader
+              avatar={<Avatar src={image} />}
+              action={
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              title={username}
+              subheader={create_at}
+            />
+            <CardContent>
+              <Table className={classes.table} aria-label="simple table">
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="right">email</TableCell>
+                    <TableCell align="right">{email}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="right">email</TableCell>
+                    <TableCell align="right">{email}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="right">email</TableCell>
+                    <TableCell align="right">{email}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+            <CardActions className={classes.actions} disableActionSpacing>
+              <IconButton aria-label="Add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton aria-label="Share">
+                <ShareIcon />
+              </IconButton>
+            </CardActions>
+          </Card>
+          {/* <Grid item xs={4} className={classes.avatar}>
             <Avatar src={image} className={classes.SizeAvatar} />
             <Box>
               <Tooltip title="Edit Avatar">
@@ -113,6 +198,7 @@ class GetMe extends Component {
                 <DialogContent>
                   <form>
                     <TextField
+                      id="newUsername"
                       fullWidth
                       style={{ marginBottom: 20 }}
                       className={classes.margin}
@@ -121,8 +207,14 @@ class GetMe extends Component {
                       value={newUsername}
                       label="New Username"
                       onChange={handleChange}
-                      error={errors.newUsername===undefined?false:true}
-                      helperText={errors.newUsername}
+                      error={
+                        errors.newUsername && touched.newUsername ? true : false
+                      }
+                      // error={touched.newUsername ? true : false}
+                      helperText={touched.newUsername ? errors.newUsername : ""}
+                      onKeyUp={() =>
+                        setFieldTouched("newUsername", true, false)
+                      }
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -130,9 +222,12 @@ class GetMe extends Component {
                           </InputAdornment>
                         )
                       }}
-                    />
+                    ></TextField>
                     <TextField
                       fullWidth
+                      onKeyUp={() => {
+                        setFieldTouched("password", true, false);
+                      }}
                       className={classes.margin}
                       id="input-with-icon-textfield"
                       name="password"
@@ -140,8 +235,8 @@ class GetMe extends Component {
                       type={showPassword ? "text" : "password"}
                       onChange={handleChange}
                       value={password}
-                      helperText={errors.password}
-                      error={errors.password===undefined?false:true}
+                      helperText={touched.password ? errors.password : ""}
+                      error={errors.password && touched.password ? true : false}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -169,6 +264,7 @@ class GetMe extends Component {
                     autoFocus
                     onClick={e => onHandleSubmit(e)}
                     type="submit"
+                    disabled={this.checkDisabled()}
                   >
                     Ok
                   </Button>
@@ -181,7 +277,7 @@ class GetMe extends Component {
             <Typography className={classes.UserInfor} variant="h5">
               created day: {create_at}
             </Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
       </React.Fragment>
     );

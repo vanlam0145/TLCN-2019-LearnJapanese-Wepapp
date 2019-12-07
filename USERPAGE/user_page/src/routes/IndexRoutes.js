@@ -1,6 +1,6 @@
 import React from "react";
-import SignUpPage from "../pages/SignUp/SignUpPage";
-import SignInPage from "../pages/SignIn/SignInPage";
+import SignUpPage  from "../pages/Authentication/SignUpPage";
+import SignInPage from "../pages/Authentication/SignInPage";
 const routes = [
   {
     path: "/login",
