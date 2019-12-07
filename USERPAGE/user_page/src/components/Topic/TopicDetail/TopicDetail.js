@@ -173,7 +173,6 @@ class TopicDetail extends Component {
   };
   renderQuestions = questions => {
     const { activeStepLearn } = this.state;
-
     let xhtml = null;
     if (questions.length !== 0) {
       xhtml = (

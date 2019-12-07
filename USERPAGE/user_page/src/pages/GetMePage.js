@@ -56,7 +56,7 @@ class GetMePage extends Component {
     this.setState({ disabled: true });
   };
   onHandleSubmit = event => {
-    console.log("doi ten username")
+    //console.log("doi ten username")
     event.preventDefault();
     this.closeDialog();
     const { newUsername, password } = this.props.values;
@@ -70,14 +70,14 @@ class GetMePage extends Component {
     setFieldTouched("password", false);
   };
   onHandleSubmitQuestion = event => {
-    console.log("vao day ne")
+    //console.log("vao day ne")
     event.preventDefault();
     this.closeDialog();
     const { sumQuestion_form, numberAnwser_form } = this.props.values;
     const { getmeActionCreators, setFieldValue, setFieldTouched } = this.props;
     const { setQuestionRequest } = getmeActionCreators;
     const data = { sumQuestion: sumQuestion_form, numberAnswer: numberAnwser_form };
-    console.log("test api: ", data);
+    //console.log("test api: ", data);
     setQuestionRequest(data);
     setFieldValue("sumQuestion", null);
     setFieldValue("numberAnswer", null);
@@ -87,7 +87,7 @@ class GetMePage extends Component {
   componentDidMount() {
     const { getme } = this.props;
     const { avatar } = getme;
-    console.log("Nguyễn Việt Hoàng didmount: ", avatar);
+    //console.log("Nguyễn Việt Hoàng didmount: ", avatar);
     if (avatar !== undefined) {
       if (this.state.image === null) {
         this.setState({
@@ -101,7 +101,7 @@ class GetMePage extends Component {
     const { getme } = this.props;
     const { avatar } = getme;
     // console.log(avatar)
-    console.log("Nguyễn Việt Hoàng didupdate: ", avatar);
+    //console.log("Nguyễn Việt Hoàng didupdate: ", avatar);
     if (this.state.image === null) {
       this.setState({
         image: avatar
@@ -146,7 +146,7 @@ class GetMePage extends Component {
       onHandleSubmitQuestion,
       onHandleSubmitImage
     } = this;
-    console.log("thuoc tinh formik: ", this.props.errors);
+    //console.log("thuoc tinh formik: ", this.props.errors);
     const { newUsername, password, sumQuestion_form, numberAnwser_form } = this.props.values;
     return (
       <GetMe
@@ -212,10 +212,10 @@ const FomikGetMe = withFormik({
     password: Yup.string()
       .required("Enter your password")
       .min(5, "Password needs to be at least 5 characters long"),
-      sumQuestion_form: Yup.number()
+    sumQuestion_form: Yup.number()
       .required("Điền số câu hỏi mà bạn muốn cài đặt")
       .moreThan(2, "Bạn cần nhập số câu hỏi trên 2"),
-      numberAnwser_form: Yup.number()
+    numberAnwser_form: Yup.number()
       .required("Điền số đáp án cho mỗi câu trả lời")
       .moreThan(2, "Bạn cần điền số đáp án trên 2")
   })
