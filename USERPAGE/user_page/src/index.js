@@ -1,12 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  Switch,
-  Route,
-  Redirect,
-  Router,
-  BrowserRouter
-} from "react-router-dom";
+import { Switch, Route, Redirect, Router, BrowserRouter } from "react-router-dom";
 //import createHistory from "history/createBrowserHistory";
 import "./index.css";
 import indexRoutes from "./routes/IndexRoutes";
@@ -27,12 +21,7 @@ ReactDOM.render(
       <GlobalLoading />
       <Switch>
         {indexRoutes.map((prop, key) => (
-          <Route
-            path={prop.path}
-            exact={prop.exact}
-            component={prop.main}
-            key={key}
-          />
+          <Route path={prop.path} exact={prop.exact} component={prop.main} key={key} />
         ))}
         <Route
           path="/"
