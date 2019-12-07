@@ -40,8 +40,7 @@ class TopicDetail extends Component {
     indexHover: false,
     indexAnswer: null,
     isComplete: false,
-    pause: true,
-    indexpause: null,
+    indexpause: null
   };
   speech = new Speech();
   onSpeak = (word, index) => {
@@ -51,11 +50,11 @@ class TopicDetail extends Component {
     this.speech.speak({
       text: `${word}`
     });
-    this.setState({ pause: false, indexpause: index })
+    this.setState({ indexpause: index })
   };
-  pauseSpeak = () => {
+  pauseSpeak = (index) => {
     this.speech.cancel()
-    this.setState({ pause: true })
+    this.setState({ indexpause: null })
   }
   handleClick(offset) {
     this.pauseSpeak()
@@ -318,9 +317,9 @@ class TopicDetail extends Component {
                 <TableCell align="center">{word.meaning}</TableCell>
                 <TableCell align="center">{word.kanji_text}</TableCell>
                 <TableCell align="center">
-                  {this.state.indexpause ? (this.state.indexpause == index) : true ? <IconButton onClick={() => this.onSpeak(word.text, index)}>
+                  {(this.state.indexpause ? (this.state.indexpause != index + 1) : true) ? <IconButton onClick={() => this.onSpeak(word.text, index + 1)}>
                     <SpeakIcon />
-                  </IconButton> : <IconButton onClick={() => this.pauseSpeak()}>
+                  </IconButton> : <IconButton onClick={(index) => this.pauseSpeak()}>
                       <PauseCircleFilledIcon />
                     </IconButton>}
                 </TableCell>
