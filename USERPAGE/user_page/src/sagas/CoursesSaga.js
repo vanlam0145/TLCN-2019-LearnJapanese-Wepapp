@@ -1,15 +1,10 @@
-import {
-  call,
-  put,
-  takeLatest,
-  take,
-  fork
-} from "redux-saga/effects";
-import * as coursesConstants from "../constants/Courses";
-import * as addcourseConstants from "../constants/AddCourse";
-import * as coursesActions from "../actions/Courses";
-import callApi from "../utils/apiCaller";
-import { toastSuccess, toastError } from "../helper/Toastify/ToastifyHelper";
+import { call, fork, put, take, takeLatest } from 'redux-saga/effects';
+
+import * as coursesActions from '../actions/Courses';
+import * as addcourseConstants from '../constants/AddCourse';
+import * as coursesConstants from '../constants/Courses';
+import { toastSuccess } from '../helper/Toastify/ToastifyHelper';
+import callApi from '../utils/apiCaller';
 
 //Lay danh sach tat ca khoa hoc cua nguoi dung
 function* getcoursesRequest() {
@@ -19,7 +14,7 @@ function* getcoursesRequest() {
       const res = yield call(callApi, "users/get-courses-latest", "GET", null);
       const { data } = res;
       yield put(coursesActions.getcoursesSuccess(data));
-    } catch (err) {}
+    } catch (err) { }
   }
 }
 
@@ -44,16 +39,14 @@ function* addcourseRequest(dataCourse) {
   }
   try {
     const res = yield call(callApi, "courses", "POST", data);
-    console.log("du lieu khoa hoc duoc tao la: ", res.data)
     yield put(coursesActions.createCourse(res.data))
     history.push("/");
     toastSuccess("Tao khoa hoc thanh cong");
-  } catch (err) {}
+  } catch (err) { }
 }
 
 //Lay chi tiet mot khoa hoc duoc chi dinh
 function* getcoursedetailsRequest(data) {
-  console.log("trong saga chi tiet khoa hoc: ", data);
   const { payload } = data;
   try {
     const res = yield call(callApi, `courses/${payload}`, "GET", null);
@@ -66,7 +59,6 @@ function* getcoursedetailsRequest(data) {
 
 //Hoc mot khoa hoc duoc chon
 function* learncourseRequest(course) {
-  console.log("trong saga hoc khoa hoc: ", course);
   const { payload } = course;
   try {
     const res = yield call(callApi, `courses/${payload}/learn`, "GET", null);

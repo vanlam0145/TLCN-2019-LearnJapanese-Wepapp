@@ -1,14 +1,12 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { bindActionCreators, compose } from "redux";
-import * as addcourseActions from "../../actions/AddCourse";
-import Grid from "@material-ui/core/Grid";
-import Home from "../../components/Home/Home";
-import { withFormik } from "formik";
-import * as Yup from "yup";
-import AddCourse from "../../components/Courses/AddCourse/AddCourse";
+import { withFormik } from 'formik';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { bindActionCreators, compose } from 'redux';
+import * as Yup from 'yup';
+
+import * as addcourseActions from '../../actions/AddCourse';
+import AddCourse from '../../components/Courses/AddCourse/AddCourse';
 
 class AddCoursePage extends Component {
   constructor(props) {
@@ -37,9 +35,7 @@ class AddCoursePage extends Component {
   };
   onDeleteCard = index => {
     const test = [...this.state.data.content];
-    console.log("vi tri xoa: ", index);
     test.splice(index, 1);
-    console.log("da xoa: ", test)
     this.setState({
       ...this.state,
       data: {
@@ -47,7 +43,6 @@ class AddCoursePage extends Component {
         content: test
       }
     });
-    console.log(this.state)
   };
   componentDidUpdate = prevProps => {
     if (prevProps.values.CourseName !== this.state.data.title) {
@@ -64,16 +59,13 @@ class AddCoursePage extends Component {
     const { addcourseRequest } = addcourseActionCreators;
     const { dataOfCourse } = AddCourseValues;
     const { data } = this.state;
-    console.log(data);
     addcourseRequest(data, history);
   };
   onChange = (event, index) => {
-    console.log("chi so: ", index);
     var target = event.target;
     var name = target.name;
     var value = target.value;
 
-    console.log(name + " : " + value);
     const data = [...this.state.data.content];
     if (name === "text") {
       data[index].text = value;

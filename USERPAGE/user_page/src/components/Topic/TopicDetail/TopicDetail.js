@@ -24,10 +24,11 @@ import Pagination from "material-ui-flat-pagination";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import SpeakIcon from "@material-ui/icons/VolumeUp";
+import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
 import RightIcon from "@material-ui/icons/CheckCircle";
 import WrongIcon from "@material-ui/icons/Cancel";
 import Speech from "speak-tts";
-const theme = () => {};
+const theme = () => { };
 class TopicDetail extends Component {
   state = {
     value: 0,
@@ -38,19 +39,26 @@ class TopicDetail extends Component {
     showResult: 0,
     indexHover: false,
     indexAnswer: null,
-    isComplete: false
+    isComplete: false,
+    pause: true,
+    indexpause: null,
   };
-  onSpeak = word => {
-    console.log(word);
-    const speech = new Speech();
-    speech.setLanguage("ja-JP");
-    speech.setRate(0.7);
-    speech.setPitch(1.4);
-    speech.speak({
+  speech = new Speech();
+  onSpeak = (word, index) => {
+    this.speech.setLanguage("ja-JP");
+    this.speech.setRate(0.7);
+    this.speech.setPitch(1);
+    this.speech.speak({
       text: `${word}`
     });
+    this.setState({ pause: false, indexpause: index })
   };
+  pauseSpeak = () => {
+    this.speech.cancel()
+    this.setState({ pause: true })
+  }
   handleClick(offset) {
+    this.pauseSpeak()
     let value = 0;
     console.log("click: ", offset);
     if (offset > this.state.offset) {
@@ -70,17 +78,8 @@ class TopicDetail extends Component {
     }
     this.setState({ offset });
   }
-  onSpeak = word => {
-    console.log(word);
-    const speech = new Speech();
-    speech.setLanguage("ja-JP");
-    speech.setRate(0.7);
-    speech.setPitch(1.4);
-    speech.speak({
-      text: `${word}`
-    });
-  };
   checkAnswer = index => {
+    this.pauseSpeak()
     const { learnTopic } = this.props;
     const { activeStepLearn } = this.state;
     // console.log("ket qua la: ", learnCourse[activeStepLearn].answer_id);
@@ -114,7 +113,7 @@ class TopicDetail extends Component {
             style={{ margin: "2%" }}
             className={`${classes.answerHover} ${
               index === indexAnswer ? classes.answer : ""
-            }`}
+              }`}
             //className={index===indexAnswer?classes.answer:""}
             disabled={indexHover === true ? true : false}
           >
@@ -190,7 +189,7 @@ class TopicDetail extends Component {
           <Box style={{ textAlign: "center", marginTop: "3%" }}>
             <Typography>{`Câu hỏi ${activeStepLearn + 1}: ${
               questions[activeStepLearn].question
-            }?`}</Typography>
+              }?`}</Typography>
           </Box>
         </React.Fragment>
       );
@@ -313,15 +312,17 @@ class TopicDetail extends Component {
         if (page_number * 10 <= index && index < (page_number + 1) * 10) {
           return (
             <React.Fragment>
-              <TableRow>
+              <TableRow key={index}>
                 <TableCell align="center">{word.text}</TableCell>
                 <TableCell align="center">{word.mean}</TableCell>
                 <TableCell align="center">{word.meaning}</TableCell>
                 <TableCell align="center">{word.kanji_text}</TableCell>
                 <TableCell align="center">
-                  <IconButton onClick={() => this.onSpeak(word.text)}>
+                  {this.state.indexpause ? (this.state.indexpause == index) : true ? <IconButton onClick={() => this.onSpeak(word.text, index)}>
                     <SpeakIcon />
-                  </IconButton>
+                  </IconButton> : <IconButton onClick={() => this.pauseSpeak()}>
+                      <PauseCircleFilledIcon />
+                    </IconButton>}
                 </TableCell>
               </TableRow>
             </React.Fragment>

@@ -97,10 +97,10 @@ class index extends React.Component {
   };
   onSpeak = () => {
     const speech = new Speech();
-    speech.setLanguage("ja-JP");
-    speech.setRate(0.7);
-    speech.setPitch(1.4);
-    speech.speak({
+    this.speech.setLanguage("ja-JP");
+    this.speech.setRate(0.7);
+    this.speech.setPitch(1.4);
+    this.speech.speak({
       text: "こんにちは、ホアンです。ベトナム出身です。はじめまして。"
     });
   };
@@ -114,7 +114,7 @@ class index extends React.Component {
       handleProfileMenuOpen,
       handleToggle
     } = this;
-    const isTest=Boolean(this.state.anchorEl_Profile)
+    const isTest = Boolean(this.state.anchorEl_Profile)
 
     const renderMobileMenu = (
       <Menu
