@@ -51,6 +51,18 @@ function* changeusernameRequest(data) {
     toastError("Thay đổi tên thất bại");
   }
 }
+function* setQuestionRequest(data) {
+  console.log("request bo cau hoi: ", data.payload);
+  const { payload } = data;
+  try {
+    const res = yield call(callApi, "users/set-question", "PUT", payload);
+    const get = yield call(callApi, "users/me", "GET", null);
+    yield put(getmeActions.getmeSuccess(get.data));
+    toastSuccess("Cài đặt bộ câu hỏi thành công");
+  } catch (err) {
+    toastError("Cài đặt bộ câu hỏi thất bại");
+  }
+}
 function* getmeWatcher() {
   yield fork(getmeRequest);
   yield takeLatest(getmeConstants.CHANGEAVATAR_REQUEST, changeavatarRequest);
@@ -58,5 +70,6 @@ function* getmeWatcher() {
     getmeConstants.CHANGEUSERNAME_REQUEST,
     changeusernameRequest
   );
+  yield takeLatest(getmeConstants.SETQUESTION_REQUEST, setQuestionRequest);
 }
 export default getmeWatcher;

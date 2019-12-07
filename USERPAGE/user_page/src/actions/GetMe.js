@@ -18,11 +18,11 @@ export const getmeSuccess = success => {
     payload: success
   };
 };
-export const getmeReset=()=>{
+export const getmeReset = () => {
   return {
     type: getmeConstants.GETME_RESET
-  }
-}
+  };
+};
 export const changeavatarSuccess = success => {
   return {
     type: getmeConstants.GETME_SUCCESS,
@@ -56,6 +56,25 @@ export const changeusernameSuccess = success => {
 export const changeusernameError = error => {
   return {
     type: getmeConstants.CHANGEUSERNAME_ERROR,
+    payload: error
+  };
+};
+
+export const setQuestionRequest = data => {
+  return {
+    type: getmeConstants.SETQUESTION_REQUEST,
+    payload: data
+  };
+};
+export const setQuestionSuccess = success => {
+  return {
+    type: getmeConstants.SETQUESTION_SUCCESS,
+    payload: success
+  };
+};
+export const setQuestionError = error => {
+  return {
+    type: getmeConstants.SETQUESTION_ERROR,
     payload: error
   };
 };
