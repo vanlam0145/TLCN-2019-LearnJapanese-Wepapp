@@ -20,13 +20,13 @@ class AddCourse extends Component {
     let xhtml = null;
     xhtml = data.map((item, index) => {
       return (
-        <Card style={{ marginBottom: "4%" }}>
+        <Card key={index} style={{ marginBottom: "4%" }}>
           <CardHeader
             title={index + 1}
             action={
               <Tooltip title="Xoa the nay">
-                <IconButton>
-                  <DeleteIcon onClick={() => onDeleteCard(index)} />
+                <IconButton onClick={() => onDeleteCard(index)} >
+                  <DeleteIcon />
                 </IconButton>
               </Tooltip>
             }
@@ -119,7 +119,6 @@ class AddCourse extends Component {
               color="primary"
               className={classes.button}
               style={{ float: "right", marginTop: "2%" }}
-              // onClick={onHandleSubmit}
               type="submit"
             >
               Create
