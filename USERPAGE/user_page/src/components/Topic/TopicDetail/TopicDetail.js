@@ -1,33 +1,30 @@
-import React, { Component } from "react";
-import _ from "lodash";
-import StylesTopicDetail from "./StylesTopicDetail";
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import Box from "@material-ui/core/Box";
-import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import MobileStepper from "@material-ui/core/MobileStepper";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import BookIcon from "@material-ui/icons/Book";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import Pagination from "material-ui-flat-pagination";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import SpeakIcon from "@material-ui/icons/VolumeUp";
+import AppBar from '@material-ui/core/AppBar';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Tab from '@material-ui/core/Tab';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import BookIcon from '@material-ui/icons/Book';
+import WrongIcon from '@material-ui/icons/Cancel';
+import RightIcon from '@material-ui/icons/CheckCircle';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
-import RightIcon from "@material-ui/icons/CheckCircle";
-import WrongIcon from "@material-ui/icons/Cancel";
-import Speech from "speak-tts";
+import SpeakIcon from '@material-ui/icons/VolumeUp';
+import Pagination from 'material-ui-flat-pagination';
+import React, { Component } from 'react';
+import Speech from 'speak-tts';
+
+import StylesTopicDetail from './StylesTopicDetail';
+
 const theme = () => { };
 class TopicDetail extends Component {
   state = {
@@ -59,7 +56,6 @@ class TopicDetail extends Component {
   handleClick(offset) {
     this.pauseSpeak()
     let value = 0;
-    console.log("click: ", offset);
     if (offset > this.state.offset) {
       value = offset / 10;
       this.setState({
@@ -81,9 +77,6 @@ class TopicDetail extends Component {
     this.pauseSpeak()
     const { learnTopic } = this.props;
     const { activeStepLearn } = this.state;
-    // console.log("ket qua la: ", learnCourse[activeStepLearn].answer_id);
-    // console.log("dap an chon la: ", index);
-    // console.log("do dai: ", learnCourse[activeStepLearn]);
     if (learnTopic[activeStepLearn].answer_id === index) {
       if (activeStepLearn < learnTopic.length - 1) {
         this.setState({
@@ -106,7 +99,7 @@ class TopicDetail extends Component {
     let xhtml = null;
     xhtml = answers.map((answer, index) => {
       return (
-        <Box style={{ textAlign: "center" }}>
+        <Box style={{ textAlign: "center" }} key={index}>
           <Button
             onClick={() => this.checkAnswer(index)}
             style={{ margin: "2%" }}
@@ -180,7 +173,7 @@ class TopicDetail extends Component {
   };
   renderQuestions = questions => {
     const { activeStepLearn } = this.state;
-    console.log(questions[activeStepLearn]);
+
     let xhtml = null;
     if (questions.length !== 0) {
       xhtml = (
@@ -305,13 +298,11 @@ class TopicDetail extends Component {
     const { page_number } = this.state;
     let xhtml = null;
     if (vocabularies !== undefined) {
-      console.log("du lieu duoc tai: ", vocabularies);
-      console.log("helloghgfhfgh");
       xhtml = vocabularies.map((word, index) => {
         if (page_number * 10 <= index && index < (page_number + 1) * 10) {
           return (
-            <React.Fragment>
-              <TableRow key={index}>
+            <React.Fragment key={index}>
+              <TableRow >
                 <TableCell align="center">{word.text}</TableCell>
                 <TableCell align="center">{word.mean}</TableCell>
                 <TableCell align="center">{word.meaning}</TableCell>
@@ -353,7 +344,6 @@ class TopicDetail extends Component {
     const { vocabularies } = topicDetail;
     const { TabContainer, onSpeak } = this;
     const { activeStep, activeStepLearn, isComplete } = this.state;
-    console.log("hoc: ", learnTopic);
     var maxSteps = 0;
     if (topicDetail.contents) {
       maxSteps = topicDetail.contents.length;
