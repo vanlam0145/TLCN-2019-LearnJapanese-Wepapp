@@ -22,27 +22,22 @@ import i18n from './helper/Languages/i18n'
 const store = configureStore();
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
-  <Provider store={store}>
-    <BrowserRouter>
-      <ToastContainer />
-      <GlobalLoading />
-      <Switch>
-        {indexRoutes.map((prop, key) => (
+    <Provider store={store}>
+      <BrowserRouter>
+        <ToastContainer />
+        <GlobalLoading />
+        <Switch>
+          {indexRoutes.map((prop, key) => (
+            <Route path={prop.path} exact={prop.exact} component={prop.main} key={key} />
+          ))}
           <Route
-            path={prop.path}
-            exact={prop.exact}
-            component={prop.main}
-            key={key}
+            path="/"
+            //render={() => (test === false ? <Redirect to="/login" /> : <App />)}
+            render={() => (checkAuthen() ? <App /> : <Redirect to="/login" />)}
           />
-        ))}
-        <Route
-          path="/"
-          //render={() => (test === false ? <Redirect to="/login" /> : <App />)}
-          render={() => (checkAuthen() ? <App /> : <Redirect to="/login" />)}
-        />
-      </Switch>
-    </BrowserRouter>
-  </Provider></I18nextProvider>,
+        </Switch>
+      </BrowserRouter>
+    </Provider></I18nextProvider>,
   document.getElementById("root")
 );
 
