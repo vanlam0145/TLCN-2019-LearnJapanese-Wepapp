@@ -126,7 +126,7 @@ class TopicDetail extends Component {
                 alignItems: "center",
                 justifyContent: "center"
               }}
-            >{`${answer}`}</Paper>
+            >{`${answer.answer}`}</Paper>
           </Button>
         </Box>
       );
@@ -420,7 +420,7 @@ class TopicDetail extends Component {
               <div
                 style={{
                   backgroundColor: "white",
-                  height: "90%",
+                  // height: "90%",
                   width: "90%"
                 }}
               >

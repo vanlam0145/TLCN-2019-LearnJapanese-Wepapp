@@ -37,6 +37,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import SetQuestionIcon from "@material-ui/icons/ImportContacts";
 class GetMe extends Component {
   componentDidMount() {
     const { getmeRequest, getme } = this.props;
@@ -63,6 +64,10 @@ class GetMe extends Component {
     }
     return result;
   };
+  directHome = () => {
+    console.log("ve trang home");
+    this.props.history.push("/");
+  };
   render() {
     const {
       classes,
@@ -73,21 +78,37 @@ class GetMe extends Component {
       onHandleSubmit,
       openDialog,
       closeDialog,
-      open,
+      openSetQuestion,
+      openSetUsername,
       handleClickShowPassword,
       handleMouseDownPassword,
       showPassword,
+      onHandleSubmitQuestion,
       password,
       onChangeImage,
       handleChange,
       onHandleSubmitImage,
+      numberAnwser_form,
+      sumQuestion_form,
       errors,
       newUsername,
       touched,
       handleBlur,
       setFieldTouched
     } = this.props;
-    const { _id, username, email, create_at, avatar } = getme;
+    const {
+      _id,
+      username,
+      email,
+      create_at,
+      avatar,
+      courses,
+      sumQuestion,
+      numberAnswer,
+      level,
+      experience,
+      histories
+    } = getme;
     console.log("getme: ", image);
     console.log("touched username: ", touched.newUsername);
     console.log("touched password: ", touched.password);
@@ -106,9 +127,23 @@ class GetMe extends Component {
             <CardHeader
               avatar={<Avatar src={image} />}
               action={
-                <IconButton>
-                  <MoreVertIcon />
-                </IconButton>
+                <React.Fragment>
+                  <Tooltip title="Chỉnh sửa ảnh đại diện">
+                    <IconButton>
+                      <label htmlFor="raised-button-file">
+                        <EditAvatar />
+                      </label>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Lưu ảnh">
+                    <IconButton
+                      disabled={disabled}
+                      onClick={onHandleSubmitImage}
+                    >
+                      <SaveAvatar />
+                    </IconButton>
+                  </Tooltip>
+                </React.Fragment>
               }
               title={username}
               subheader={create_at}
@@ -117,27 +152,59 @@ class GetMe extends Component {
               <Table className={classes.table} aria-label="simple table">
                 <TableBody>
                   <TableRow>
-                    <TableCell align="right">email</TableCell>
-                    <TableCell align="right">{email}</TableCell>
+                    <TableCell align="left">Email</TableCell>
+                    <TableCell align="center">{email}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell align="right">email</TableCell>
-                    <TableCell align="right">{email}</TableCell>
+                    <TableCell align="left">Khoá học cá nhân</TableCell>
+                    <TableCell align="center">
+                      <a
+                        style={{ cursor: "pointer" }}
+                        onClick={this.directHome}
+                      >
+                        {courses ? courses.length : ""} khoá học
+                      </a>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell align="right">email</TableCell>
-                    <TableCell align="right">{email}</TableCell>
+                    <TableCell align="left">Cấp độ {level}</TableCell>
+                    <TableCell align="center">kinh nghiệm {experience}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="left">Lịch sử kiểm tra</TableCell>
+                    <TableCell align="center">0</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="left">Bộ câu hỏi</TableCell>
+                    <TableCell align="center">
+                      {sumQuestion} câu hỏi | {numberAnswer} câu trả lời
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </CardContent>
-            <CardActions className={classes.actions} disableActionSpacing>
-              <IconButton aria-label="Add to favorites">
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton aria-label="Share">
-                <ShareIcon />
-              </IconButton>
+            <CardActions
+              className={classes.actions}
+              disableActionSpacing
+              style={{ float: "right" }}
+            >
+              <Tooltip title="Chỉnh sửa tên(username)">
+                <IconButton
+                  aria-label="Add to favorites"
+                  onClick={() => openDialog("openSetUsername")}
+                >
+                  <EditAvatar />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Cài đặt bộ câu hỏi">
+                <IconButton
+                  aria-label="Share"
+                  onClick={() => openDialog("openSetQuestion")}
+                  disabled
+                >
+                  <SetQuestionIcon />
+                </IconButton>
+              </Tooltip>
             </CardActions>
           </Card>
           {/* <Grid item xs={4} className={classes.avatar}>
@@ -279,6 +346,188 @@ class GetMe extends Component {
             </Typography>
           </Grid> */}
         </Grid>
+
+        {/* input de thay doi avatar. mac dinh hide */}
+        <input
+          accept="image/*"
+          className={classes.input}
+          id="raised-button-file"
+          multiple
+          type="file"
+          onChange={e => onChangeImage(e)}
+        />
+
+        {/* Dialog thay doi username */}
+        <Dialog
+          open={openSetUsername}
+          onClose={closeDialog}
+          maxWidth="xs"
+          fullWidth
+        >
+          <DialogTitle>Change your username</DialogTitle>
+          <DialogContent>
+            <form>
+              <TextField
+                id="newUsername"
+                fullWidth
+                style={{ marginBottom: 20 }}
+                className={classes.margin}
+                id="input-with-icon-textfield"
+                name="newUsername"
+                value={newUsername}
+                label="New Username"
+                onChange={handleChange}
+                error={errors.newUsername && touched.newUsername ? true : false}
+                // error={touched.newUsername ? true : false}
+                helperText={touched.newUsername ? errors.newUsername : ""}
+                onKeyUp={() => setFieldTouched("newUsername", true, false)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  )
+                }}
+              ></TextField>
+              <TextField
+                fullWidth
+                onKeyUp={() => {
+                  setFieldTouched("password", true, false);
+                }}
+                className={classes.margin}
+                id="input-with-icon-textfield"
+                name="password"
+                label="Your Password"
+                type={showPassword ? "text" : "password"}
+                onChange={handleChange}
+                value={password}
+                helperText={touched.password ? errors.password : ""}
+                error={errors.password && touched.password ? true : false}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockIcon />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  )
+                }}
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus color="primary" onClick={closeDialog}>
+              Cancel
+            </Button>
+            <Button
+              color="primary"
+              autoFocus
+              onClick={e => onHandleSubmit(e)}
+              type="submit"
+              disabled={this.checkDisabled()}
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Dialog cai dat bo cau hoi */}
+        <Dialog
+          open={openSetQuestion}
+          onClose={closeDialog}
+          maxWidth="xs"
+          fullWidth
+        >
+          <DialogTitle>Cài đặt bộ câu hỏi</DialogTitle>
+          <DialogContent>
+            <form>
+              <TextField
+                id="newUsername"
+                type="number"
+                fullWidth
+                style={{ marginBottom: 20 }}
+                className={classes.margin}
+                id="input-with-icon-textfield"
+                name="sumQuestion_form"
+                value={sumQuestion_form}
+                label="Số câu hỏi"
+                onChange={handleChange}
+                error={
+                  errors.sumQuestion_form && touched.sumQuestion_form
+                    ? true
+                    : false
+                }
+                // error={touched.newUsername ? true : false}
+                helperText={
+                  touched.sumQuestion_form ? errors.sumQuestion_form : ""
+                }
+                onKeyUp={() => setFieldTouched("sumQuestion_form", true, false)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  )
+                }}
+              ></TextField>
+              <TextField
+                fullWidth
+                onKeyUp={() => {
+                  setFieldTouched("numberAnwser_form", true, false);
+                }}
+                className={classes.margin}
+                id="input-with-icon-textfield"
+                name="numberAnwser_form"
+                label="Số câu trả lời"
+                type="number"
+                onChange={handleChange}
+                value={numberAnwser_form}
+                helperText={
+                  touched.numberAnwser_form ? errors.numberAnwser_form : ""
+                }
+                error={
+                  errors.numberAnwser_form && touched.numberAnwser_form
+                    ? true
+                    : false
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockIcon />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  )
+                }}
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus color="primary" onClick={closeDialog}>
+              Cancel
+            </Button>
+            <Button
+              color="primary"
+              autoFocus
+              onClick={e => onHandleSubmitQuestion(e)}
+              type="submit"
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
       </React.Fragment>
     );
   }

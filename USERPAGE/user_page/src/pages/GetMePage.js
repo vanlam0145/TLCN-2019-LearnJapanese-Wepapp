@@ -15,7 +15,8 @@ class GetMePage extends Component {
       image: null,
       file: [],
       disabled: true,
-      open: false,
+      openSetUsername: false,
+      openSetQuestion: false,
       showPassword: false
     };
   }
@@ -37,11 +38,12 @@ class GetMePage extends Component {
       [name]: value
     });
   };
-  openDialog = () => {
-    this.setState({ open: true });
+  openDialog = data => {
+    if (data === "openSetUsername") this.setState({ openSetUsername: true });
+    if (data === "openSetQuestion") this.setState({ openSetQuestion: true });
   };
   closeDialog = () => {
-    this.setState({ open: false });
+    this.setState({ openSetUsername: false, openSetQuestion: false });
   };
   onHandleSubmitImage = event => {
     event.preventDefault();
@@ -54,6 +56,7 @@ class GetMePage extends Component {
     this.setState({ disabled: true });
   };
   onHandleSubmit = event => {
+    console.log("doi ten username")
     event.preventDefault();
     this.closeDialog();
     const { newUsername, password } = this.props.values;
@@ -61,10 +64,25 @@ class GetMePage extends Component {
     const { changeusernameRequest } = getmeActionCreators;
     const data = { password: password, newName: newUsername };
     changeusernameRequest(data);
-    setFieldValue("newUsername", "")
-    setFieldValue("password", "")
-    setFieldTouched("newUsername", false)
-    setFieldTouched("password", false)
+    setFieldValue("newUsername", "");
+    setFieldValue("password", "");
+    setFieldTouched("newUsername", false);
+    setFieldTouched("password", false);
+  };
+  onHandleSubmitQuestion = event => {
+    console.log("vao day ne")
+    event.preventDefault();
+    this.closeDialog();
+    const { sumQuestion_form, numberAnwser_form } = this.props.values;
+    const { getmeActionCreators, setFieldValue, setFieldTouched } = this.props;
+    const { setQuestionRequest } = getmeActionCreators;
+    const data = { sumQuestion: sumQuestion_form, numberAnswer: numberAnwser_form };
+    console.log("test api: ", data);
+    setQuestionRequest(data);
+    setFieldValue("sumQuestion", null);
+    setFieldValue("numberAnswer", null);
+    setFieldTouched("newUsername", false);
+    setFieldTouched("password", false);
   };
   componentDidMount() {
     const { getme } = this.props;
@@ -110,7 +128,13 @@ class GetMePage extends Component {
       setFieldTouched
     } = this.props;
     const { getmeRequest } = getmeActionCreators;
-    const { image, disabled, open, showPassword } = this.state;
+    const {
+      image,
+      disabled,
+      openSetQuestion,
+      openSetUsername,
+      showPassword
+    } = this.state;
     const {
       onChange,
       onHandleSubmit,
@@ -119,22 +143,27 @@ class GetMePage extends Component {
       handleClickShowPassword,
       handleMouseDownPassword,
       onChangeImage,
+      onHandleSubmitQuestion,
       onHandleSubmitImage
     } = this;
     console.log("thuoc tinh formik: ", this.props.errors);
-    const { newUsername, password } = this.props.values;
+    const { newUsername, password, sumQuestion_form, numberAnwser_form } = this.props.values;
     return (
       <GetMe
         history={history}
         getmeRequest={getmeRequest}
         getme={getme}
+        sumQuestion_form={sumQuestion_form}
+        numberAnwser_form={numberAnwser_form}
         onChange={onChange}
         image={image}
+        onHandleSubmitQuestion={onHandleSubmitQuestion}
         disabled={disabled}
         onHandleSubmit={onHandleSubmit}
         openDialog={openDialog}
         closeDialog={closeDialog}
-        open={open}
+        openSetUsername={openSetUsername}
+        openSetQuestion={openSetQuestion}
         handleMouseDownPassword={handleMouseDownPassword}
         handleClickShowPassword={handleClickShowPassword}
         showPassword={showPassword}
@@ -171,7 +200,9 @@ const FomikGetMe = withFormik({
   mapPropsToValues() {
     return {
       newUsername: "",
-      password: ""
+      password: "",
+      sumQuestion_form: null,
+      numberAnwser_form: null
     };
   },
   validationSchema: Yup.object().shape({
@@ -180,7 +211,13 @@ const FomikGetMe = withFormik({
       .min(5, "Username needs to be at least 5 characters long"),
     password: Yup.string()
       .required("Enter your password")
-      .min(5, "Password needs to be at least 5 characters long")
+      .min(5, "Password needs to be at least 5 characters long"),
+      sumQuestion_form: Yup.number()
+      .required("Điền số câu hỏi mà bạn muốn cài đặt")
+      .moreThan(2, "Bạn cần nhập số câu hỏi trên 2"),
+      numberAnwser_form: Yup.number()
+      .required("Điền số đáp án cho mỗi câu trả lời")
+      .moreThan(2, "Bạn cần điền số đáp án trên 2")
   })
 })(test);
 export default compose(withConnect)(FomikGetMe);
