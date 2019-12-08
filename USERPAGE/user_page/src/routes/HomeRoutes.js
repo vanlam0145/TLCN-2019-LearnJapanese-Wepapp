@@ -1,6 +1,6 @@
 import React from "react";
 import GetMePage from "../pages/GetMePage";
-import checkAuthen from "../helper/CheckToken/CheckToken";
+import checkAuthen from "../helper/GetToken/getToken";
 import SignInPage from "../pages/Authentication/SignInPage";
 import HomePage from "../pages/Courses/CourseListPage";
 import AddCoursePage from "../pages/Courses/AddCoursePage";

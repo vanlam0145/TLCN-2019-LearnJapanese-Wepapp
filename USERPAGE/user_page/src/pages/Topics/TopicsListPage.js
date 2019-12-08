@@ -18,7 +18,6 @@ class TopicsListPage extends Component {
 
   handleClick(offset) {
     let value = 0;
-    console.log("click: ", offset);
     if (offset > this.state.offset) {
       value = offset / 9;
       this.setState({
@@ -42,7 +41,6 @@ class TopicsListPage extends Component {
     // if (_.isEmpty(Courses.courses)) {
     //   getcoursesRequest();
     // }
-    console.log("helloooooooo");
     getTopicsRequest();
   }
   onDelete = id => {
@@ -53,8 +51,6 @@ class TopicsListPage extends Component {
   showTopics = Topics => {
     const { onDelete } = this;
     const { offset, page_number } = this.state;
-    console.log("1: ", page_number);
-    console.log("2: ", offset);
     var result = null;
     if (!_.isEmpty(Topics)) {
       result = Topics.map((topic, index) => {
@@ -72,7 +68,6 @@ class TopicsListPage extends Component {
   render() {
     const { Courses, Topics } = this.props;
     const { courses } = Courses;
-    console.log("du lieu: ", Topics);
     return (
       <React.Fragment>
         <TopicList>{this.showTopics(Topics)}</TopicList>

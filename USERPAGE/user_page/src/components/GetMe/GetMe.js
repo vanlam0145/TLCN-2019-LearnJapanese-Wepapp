@@ -41,7 +41,6 @@ import SetQuestionIcon from "@material-ui/icons/ImportContacts";
 class GetMe extends Component {
   componentDidMount() {
     const { getmeRequest, getme } = this.props;
-    console.log(getme);
     if (!getme.username) {
       getmeRequest();
     }
@@ -53,9 +52,9 @@ class GetMe extends Component {
   checkDisabled = () => {
     var result = null;
     const { newUsername, password, errors } = this.props;
-    console.log("newUsername: ", newUsername);
-    console.log("password: ", password);
-    console.log("errors: ", errors);
+    //console.log("newUsername: ", newUsername);
+    //console.log("password: ", password);
+    //console.log("errors: ", errors);
     if (newUsername === "" || password === "") {
       result = true;
     }
@@ -65,7 +64,7 @@ class GetMe extends Component {
     return result;
   };
   directHome = () => {
-    console.log("ve trang home");
+    //console.log("ve trang home");
     this.props.history.push("/");
   };
   render() {
@@ -109,61 +108,78 @@ class GetMe extends Component {
       experience,
       histories
     } = getme;
-    console.log("getme: ", image);
-    console.log("touched username: ", touched.newUsername);
-    console.log("touched password: ", touched.password);
-    console.log("loi truyen tu formik: ", errors);
+    const thu = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"]
+    const date = new Date(create_at);
+    // console.log("getme: ", image);
+    // console.log("touched username: ", touched.newUsername);
+    // console.log("touched password: ", touched.password);
+    // console.log("loi truyen tu formik: ", errors);
     return (
-      <React.Fragment>
-        <Grid
-          container
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "1%"
-          }}
-        >
-          <Card style={{ maxWidth: "600px", minWidth: "600px" }}>
-            <CardHeader
-              avatar={<Avatar src={image} />}
-              action={
-                <React.Fragment>
-                  <Tooltip title="Chỉnh sửa ảnh đại diện">
-                    <IconButton>
-                      <label htmlFor="raised-button-file">
-                        <EditAvatar />
-                      </label>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Lưu ảnh">
-                    <IconButton
-                      disabled={disabled}
-                      onClick={onHandleSubmitImage}
-                    >
-                      <SaveAvatar />
-                    </IconButton>
-                  </Tooltip>
-                </React.Fragment>
-              }
-              title={username}
-              subheader={create_at}
-            />
-            <CardContent>
-              <Table className={classes.table} aria-label="simple table">
-                <TableBody>
-                  <TableRow>
-                    <TableCell align="left">Email</TableCell>
-                    <TableCell align="center">{email}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="left">Khoá học cá nhân</TableCell>
-                    <TableCell align="center">
-                      <a
-                        style={{ cursor: "pointer" }}
-                        onClick={this.directHome}
+      <div>
+        <React.Fragment>
+          <Grid
+            container
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "1%"
+            }}
+          >
+            <Card style={{ maxWidth: "600px", minWidth: "600px" }}>
+              <CardHeader
+                avatar={<Avatar src={image} />}
+                action={
+                  <React.Fragment>
+                    <Tooltip title="Chỉnh sửa ảnh đại diện">
+                      <IconButton>
+                        <label htmlFor="raised-button-file">
+                          <EditAvatar />
+                        </label>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Lưu ảnh">
+                      <IconButton
+                        disabled={disabled}
+                        onClick={onHandleSubmitImage}
                       >
-                        {courses ? courses.length : ""} khoá học
+                        <SaveAvatar />
+                      </IconButton>
+                    </Tooltip>
+                  </React.Fragment>
+                }
+                title={username}
+                subheader={`${date.toLocaleTimeString()} - ${thu[date.getDay()]} - ${date.toLocaleDateString()}`}
+              />
+              <CardContent>
+                <Table className={classes.table} aria-label="simple table">
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="left">Email</TableCell>
+                      <TableCell align="center">{email}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="left">Khoá học cá nhân</TableCell>
+                      <TableCell align="center">
+                        <a
+                          style={{ cursor: "pointer" }}
+                          onClick={this.directHome}
+                        >
+                          {courses ? courses.length : ""} khoá học
                       </a>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="left">Cấp độ {level}</TableCell>
+                      <TableCell align="center">kinh nghiệm {experience}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="left">Lịch sử kiểm tra</TableCell>
+                      <TableCell align="center">0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="left">Bộ câu hỏi</TableCell>
+                      <TableCell align="center">
+                        {sumQuestion} câu hỏi | {numberAnswer} câu trả lời
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -344,190 +360,191 @@ class GetMe extends Component {
               created day: {create_at}
             </Typography>
           </Grid> */}
-        </Grid>
+          </Grid>
 
-        {/* input de thay doi avatar. mac dinh hide */}
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="raised-button-file"
-          multiple
-          type="file"
-          onChange={e => onChangeImage(e)}
-        />
+          {/* input de thay doi avatar. mac dinh hide */}
+          <input
+            accept="image/*"
+            className={classes.input}
+            id="raised-button-file"
+            multiple
+            type="file"
+            onChange={e => onChangeImage(e)}
+          />
 
-        {/* Dialog thay doi username */}
-        <Dialog
-          open={openSetUsername}
-          onClose={closeDialog}
-          maxWidth="xs"
-          fullWidth
-        >
-          <DialogTitle>Change your username</DialogTitle>
-          <DialogContent>
-            <form>
-              <TextField
-                id="newUsername"
-                fullWidth
-                style={{ marginBottom: 20 }}
-                className={classes.margin}
-                id="input-with-icon-textfield"
-                name="newUsername"
-                value={newUsername}
-                label="New Username"
-                onChange={handleChange}
-                error={errors.newUsername && touched.newUsername ? true : false}
-                // error={touched.newUsername ? true : false}
-                helperText={touched.newUsername ? errors.newUsername : ""}
-                onKeyUp={() => setFieldTouched("newUsername", true, false)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AccountCircle />
-                    </InputAdornment>
-                  )
-                }}
-              ></TextField>
-              <TextField
-                fullWidth
-                onKeyUp={() => {
-                  setFieldTouched("password", true, false);
-                }}
-                className={classes.margin}
-                id="input-with-icon-textfield"
-                name="password"
-                label="Your Password"
-                type={showPassword ? "text" : "password"}
-                onChange={handleChange}
-                value={password}
-                helperText={touched.password ? errors.password : ""}
-                error={errors.password && touched.password ? true : false}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <IconButton
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  )
-                }}
-              />
-            </form>
-          </DialogContent>
-          <DialogActions>
-            <Button autoFocus color="primary" onClick={closeDialog}>
-              Cancel
+          {/* Dialog thay doi username */}
+          <Dialog
+            open={openSetUsername}
+            onClose={closeDialog}
+            maxWidth="xs"
+            fullWidth
+          >
+            <DialogTitle>Change your username</DialogTitle>
+            <DialogContent>
+              <form>
+                <TextField
+                  id="newUsername"
+                  fullWidth
+                  style={{ marginBottom: 20 }}
+                  className={classes.margin}
+                  id="input-with-icon-textfield"
+                  name="newUsername"
+                  value={newUsername}
+                  label="New Username"
+                  onChange={handleChange}
+                  error={errors.newUsername && touched.newUsername ? true : false}
+                  // error={touched.newUsername ? true : false}
+                  helperText={touched.newUsername ? errors.newUsername : ""}
+                  onKeyUp={() => setFieldTouched("newUsername", true, false)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircle />
+                      </InputAdornment>
+                    )
+                  }}
+                ></TextField>
+                <TextField
+                  fullWidth
+                  onKeyUp={() => {
+                    setFieldTouched("password", true, false);
+                  }}
+                  className={classes.margin}
+                  id="input-with-icon-textfield"
+                  name="password"
+                  label="Your Password"
+                  type={showPassword ? "text" : "password"}
+                  onChange={handleChange}
+                  value={password}
+                  helperText={touched.password ? errors.password : ""}
+                  error={errors.password && touched.password ? true : false}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    )
+                  }}
+                />
+              </form>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus color="primary" onClick={closeDialog}>
+                Cancel
             </Button>
-            <Button
-              color="primary"
-              autoFocus
-              onClick={e => onHandleSubmit(e)}
-              type="submit"
-              disabled={this.checkDisabled()}
-            >
-              Ok
+              <Button
+                color="primary"
+                autoFocus
+                onClick={e => onHandleSubmit(e)}
+                type="submit"
+                disabled={this.checkDisabled()}
+              >
+                Ok
             </Button>
-          </DialogActions>
-        </Dialog>
+            </DialogActions>
+          </Dialog>
 
-        {/* Dialog cai dat bo cau hoi */}
-        <Dialog
-          open={openSetQuestion}
-          onClose={closeDialog}
-          maxWidth="xs"
-          fullWidth
-        >
-          <DialogTitle>Cài đặt bộ câu hỏi</DialogTitle>
-          <DialogContent>
-            <form>
-              <TextField
-                id="newUsername"
-                type="number"
-                fullWidth
-                style={{ marginBottom: 20 }}
-                className={classes.margin}
-                id="input-with-icon-textfield"
-                name="sumQuestion_form"
-                value={sumQuestion_form}
-                label="Số câu hỏi"
-                onChange={handleChange}
-                error={
-                  errors.sumQuestion_form && touched.sumQuestion_form
-                    ? true
-                    : false
-                }
-                // error={touched.newUsername ? true : false}
-                helperText={
-                  touched.sumQuestion_form ? errors.sumQuestion_form : ""
-                }
-                onKeyUp={() => setFieldTouched("sumQuestion_form", true, false)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AccountCircle />
-                    </InputAdornment>
-                  )
-                }}
-              ></TextField>
-              <TextField
-                fullWidth
-                onKeyUp={() => {
-                  setFieldTouched("numberAnwser_form", true, false);
-                }}
-                className={classes.margin}
-                id="input-with-icon-textfield"
-                name="numberAnwser_form"
-                label="Số câu trả lời"
-                type="number"
-                onChange={handleChange}
-                value={numberAnwser_form}
-                helperText={
-                  touched.numberAnwser_form ? errors.numberAnwser_form : ""
-                }
-                error={
-                  errors.numberAnwser_form && touched.numberAnwser_form
-                    ? true
-                    : false
-                }
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <IconButton
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  )
-                }}
-              />
-            </form>
-          </DialogContent>
-          <DialogActions>
-            <Button autoFocus color="primary" onClick={closeDialog}>
-              Cancel
+          {/* Dialog cai dat bo cau hoi */}
+          <Dialog
+            open={openSetQuestion}
+            onClose={closeDialog}
+            maxWidth="xs"
+            fullWidth
+          >
+            <DialogTitle>Cài đặt bộ câu hỏi</DialogTitle>
+            <DialogContent>
+              <form>
+                <TextField
+                  id="newUsername"
+                  type="number"
+                  fullWidth
+                  style={{ marginBottom: 20 }}
+                  className={classes.margin}
+                  id="input-with-icon-textfield"
+                  name="sumQuestion_form"
+                  value={sumQuestion_form}
+                  label="Số câu hỏi"
+                  onChange={handleChange}
+                  error={
+                    errors.sumQuestion_form && touched.sumQuestion_form
+                      ? true
+                      : false
+                  }
+                  // error={touched.newUsername ? true : false}
+                  helperText={
+                    touched.sumQuestion_form ? errors.sumQuestion_form : ""
+                  }
+                  onKeyUp={() => setFieldTouched("sumQuestion_form", true, false)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircle />
+                      </InputAdornment>
+                    )
+                  }}
+                ></TextField>
+                <TextField
+                  fullWidth
+                  onKeyUp={() => {
+                    setFieldTouched("numberAnwser_form", true, false);
+                  }}
+                  className={classes.margin}
+                  id="input-with-icon-textfield"
+                  name="numberAnwser_form"
+                  label="Số câu trả lời"
+                  type="number"
+                  onChange={handleChange}
+                  value={numberAnwser_form}
+                  helperText={
+                    touched.numberAnwser_form ? errors.numberAnwser_form : ""
+                  }
+                  error={
+                    errors.numberAnwser_form && touched.numberAnwser_form
+                      ? true
+                      : false
+                  }
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    )
+                  }}
+                />
+              </form>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus color="primary" onClick={closeDialog}>
+                Cancel
             </Button>
-            <Button
-              color="primary"
-              autoFocus
-              onClick={e => onHandleSubmitQuestion(e)}
-              type="submit"
-            >
-              Ok
+              <Button
+                color="primary"
+                autoFocus
+                onClick={e => onHandleSubmitQuestion(e)}
+                type="submit"
+              >
+                Ok
             </Button>
-          </DialogActions>
-        </Dialog>
-      </React.Fragment>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
+      </div>
     );
   }
 }

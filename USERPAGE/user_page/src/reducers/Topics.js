@@ -14,7 +14,6 @@ const reducer = (state = initialState, action) => {
       };
     }
     case topicsConstants.GET_TOPICS_SUCCESS: {
-      console.log("nhan ve cac topics: ", action.payload);
       return {
         ...state,
         topics: action.payload
@@ -31,8 +30,8 @@ const reducer = (state = initialState, action) => {
         topicDetail: payload
       };
     }
-    case topicsConstants.LEARN_TOPIC_SUCCESS:{
-      const {payload}=action
+    case topicsConstants.LEARN_TOPIC_SUCCESS: {
+      const { payload } = action
       return {
         ...state,
         learnTopic: payload

@@ -1,6 +1,6 @@
 const getCookie = () => {
   var name = "token=";
-  var ca = document.cookie.split(";");
+  var ca = document.cookie.split("; ");
   for (var i = 0; i < 2; i++) {
     var c = ca[i];
     while (c.charAt(0) === " ") {

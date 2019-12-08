@@ -23,7 +23,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import RightIcon from "@material-ui/icons/CheckCircle";
 import WrongIcon from "@material-ui/icons/Cancel";
 import Speech from "speak-tts";
-const theme = () => {};
+const theme = () => { };
 class CourseDetail extends Component {
   state = {
     value: 0,
@@ -31,26 +31,27 @@ class CourseDetail extends Component {
     activeStepLearn: 0,
     showResult: 0,
     indexHover: false,
-    indexAnswer: null
+    indexAnswer: null,
+
   };
+  speech = new Speech();
   onSpeak = word => {
-    console.log(word);
-    const speech = new Speech();
-    speech.setLanguage("ja-JP");
-    speech.setRate(0.7);
-    speech.setPitch(1.4);
-    speech.speak({
+    if (word.charCodeAt() > parseInt(0x3040))
+      this.speech.setLanguage("ja-JP");
+    else
+      this.speech.setLanguage('en-US');
+    this.speech.setRate(0.7);
+    this.speech.setPitch(1);
+    this.speech.speak({
       text: `${word}`
     });
   };
+  pauseSpeak = () => {
+    this.speech.cancel()
+  }
   checkAnswer = index => {
     const { learnCourse } = this.props;
     const { activeStepLearn } = this.state;
-    console.log("cc: ", learnCourse.length);
-    console.log("cc2: ", activeStepLearn);
-    console.log("ket qua la: ", learnCourse[activeStepLearn].answer_id);
-    console.log("dap an chon la: ", index);
-    console.log("do dai: ", learnCourse[activeStepLearn]);
     if (learnCourse[activeStepLearn].answer_id === index) {
       if (activeStepLearn < learnCourse.length - 1) {
         this.setState({ showResult: 1, indexHover: true, indexAnswer: index });
@@ -69,11 +70,11 @@ class CourseDetail extends Component {
     let xhtml = null;
     xhtml = answers.map((answer, index) => {
       return (
-        <Box style={{ textAlign: "center" }}>
+        <Box style={{ textAlign: "center" }} key={index}>
           <Button
             onClick={() => this.checkAnswer(index)}
             style={{ margin: "2%" }}
-            className={`${classes.answerHover} ${index===indexAnswer?classes.answer:""}`}
+            className={`${classes.answerHover} ${index === indexAnswer ? classes.answer : ""}`}
             //className={index===indexAnswer?classes.answer:""}
             disabled={indexHover === true ? true : false}
           >
@@ -94,7 +95,6 @@ class CourseDetail extends Component {
   };
   renderQuestions = questions => {
     const { activeStepLearn } = this.state;
-    console.log(questions[activeStepLearn]);
     let xhtml = null;
     if (questions.length !== 0) {
       xhtml = (
@@ -102,7 +102,7 @@ class CourseDetail extends Component {
           <Box style={{ textAlign: "center", marginTop: "3%" }}>
             <Typography>{`Câu hỏi ${activeStepLearn + 1}: ${
               questions[activeStepLearn].question
-            }?`}</Typography>
+              }?`}</Typography>
           </Box>
         </React.Fragment>
       );
@@ -183,27 +183,32 @@ class CourseDetail extends Component {
     return xhtml;
   };
   handleNext = () => {
+    this.pauseSpeak()
     this.setState(prevState => ({
       activeStep: prevState.activeStep + 1
     }));
   };
   handleBack = () => {
+    this.pauseSpeak()
     this.setState(prevState => ({
       activeStep: prevState.activeStep - 1
     }));
   };
   handleNextLearn = () => {
+    this.pauseSpeak()
     this.setState({ showResult: 0, indexHover: false, indexAnswer: null });
     this.setState(prevState => ({
       activeStepLearn: prevState.activeStepLearn + 1
     }));
   };
   handleBackLearn = () => {
+    this.pauseSpeak()
     this.setState(prevState => ({
       activeStepLearn: prevState.activeStepLearn - 1
     }));
   };
   handleChange = (event, value) => {
+    this.pauseSpeak()
     this.setState({ value });
   };
   TabContainer = props => {
@@ -219,14 +224,12 @@ class CourseDetail extends Component {
     const { TabContainer, onSpeak } = this;
     const { activeStep, activeStepLearn } = this.state;
     const { title, contents } = courseDetail;
-    console.log("courseDetail: ", courseDetail.title);
     var maxSteps = 0;
     if (courseDetail.contents) {
       maxSteps = courseDetail.contents.length;
     } else {
       maxSteps = 0;
     }
-    console.log("du lieu duoc tai: ", courseDetail);
     return (
       <React.Fragment>
         <Grid container style={{ height: "90vh" }}>
@@ -328,8 +331,9 @@ class CourseDetail extends Component {
                           {theme.direction === "rtl" ? (
                             <KeyboardArrowLeft />
                           ) : (
-                            <KeyboardArrowRight />
-                          )}
+                              <KeyboardArrowRight />
+                            )}
+
                         </Button>
                       }
                       backButton={
@@ -341,8 +345,8 @@ class CourseDetail extends Component {
                           {theme.direction === "rtl" ? (
                             <KeyboardArrowRight />
                           ) : (
-                            <KeyboardArrowLeft />
-                          )}
+                              <KeyboardArrowLeft />
+                            )}
                           Back
                         </Button>
                       }

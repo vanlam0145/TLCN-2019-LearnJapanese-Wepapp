@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators, compose } from "redux";
 import SignIn from "../../components/Authentication/SignIn/SignIn";
-import checkAuthen from "../../helper/CheckToken/CheckToken";
+import checkAuthen from "../../helper/GetToken/getToken";
 import * as signinActions from "../../actions/SignIn";
 import { withFormik } from "formik";
 import * as Yup from "yup";

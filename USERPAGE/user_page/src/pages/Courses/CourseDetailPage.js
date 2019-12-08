@@ -16,7 +16,6 @@ class CourseDetailPage extends Component {
       getcoursedetailsRequest,
       learncourseRequest
     } = coursesActionCreators;
-    console.log("hello: ", this.props.match.params.id);
     const { id } = this.props.match.params;
     await getcoursedetailsRequest(id);
     await learncourseRequest(id);
@@ -37,7 +36,6 @@ class CourseDetailPage extends Component {
   render() {
     const { courseDetail, learnCourse } = this.props;
     const { onDeleteCourse, onLearnCourse } = this;
-    console.log("xyz: ", learnCourse.length);
     return (
       <React.Fragment>
         <CourseDetail
