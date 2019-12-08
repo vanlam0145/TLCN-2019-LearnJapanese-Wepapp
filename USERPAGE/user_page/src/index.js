@@ -13,7 +13,7 @@ import GlobalLoading from "./components/GlobalLoading";
 import configureStore from "./redux/configureStore";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import checkAuthen from "./helper/CheckToken/CheckToken";
+import checkAuthen from "./helper/GetToken/getToken";
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";

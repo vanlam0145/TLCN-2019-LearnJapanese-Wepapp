@@ -70,7 +70,7 @@ class CourseDetail extends Component {
     let xhtml = null;
     xhtml = answers.map((answer, index) => {
       return (
-        <Box style={{ textAlign: "center" }}>
+        <Box style={{ textAlign: "center" }} key={index}>
           <Button
             onClick={() => this.checkAnswer(index)}
             style={{ margin: "2%" }}

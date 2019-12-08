@@ -9,7 +9,6 @@ import StylesTopicItem from "./StylesTopicItem";
 class CourseItem extends Component {
   render() {
     const { topic, classes, Courses, onDelete } = this.props;
-    console.log(topic);
     return (
       <React.Fragment>
         <Link style={{ textDecoration: "none" }} to={"/topics/" + topic._id}>
@@ -20,8 +19,8 @@ class CourseItem extends Component {
             <Typography variant="h6" component="h3">
               {`Bài học số ${topic.lesson_number}`}
             </Typography>
-            <Divider style={{backgroundColor: "#3e51b5"}}/>
-            <Typography component="p" style={{marginTop: "13%"}}>{topic.title}</Typography>
+            <Divider style={{ backgroundColor: "#3e51b5" }} />
+            <Typography component="p" style={{ marginTop: "13%" }}>{topic.title}</Typography>
           </Paper>
         </Link>
       </React.Fragment>

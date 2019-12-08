@@ -40,7 +40,6 @@ class index extends React.Component {
   };
 
   handleProfileMenuOpen = event => {
-    console.log("click here")
     const { currentTarget } = event;
     this.setState(state => ({
       anchorEl_Profile: currentTarget,
