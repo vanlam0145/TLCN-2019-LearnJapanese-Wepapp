@@ -6,8 +6,14 @@ import HomePage from "../pages/Courses/CourseListPage";
 import AddCoursePage from "../pages/Courses/AddCoursePage";
 import CourseDetailPage from "../pages/Courses/CourseDetailPage";
 import TopicsListPage from "../pages/Topics/TopicsListPage";
-import TopicDetailPage from "../pages/Topics/TopicDetailPage"
+import ChallengeListPage from "../pages/Challenges/ChallengesListPage";
+import TopicDetailPage from "../pages/Topics/TopicDetailPage";
 const routes = [
+  {
+    path: "/challenges",
+    exact: false,
+    main: () => (checkAuthen() ? <ChallengeListPage /> : <SignInPage />)
+  },
   {
     path: "/topics/:id",
     exact: false,

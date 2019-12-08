@@ -15,10 +15,17 @@ class CourseDetailPage extends Component {
     learntopicRequest(id);
   }
   render() {
-    const { topicDetail, learnTopic } = this.props;
+    const { topicDetail, learnTopic, topicsActionCreators } = this.props;
+    const {id}=this.props.match.params
+    const { setHistoriesRequest } = topicsActionCreators;
     return (
       <React.Fragment>
-        <TopicDetail topicDetail={topicDetail} learnTopic={learnTopic} />
+        <TopicDetail
+          topicDetail={topicDetail}
+          learnTopic={learnTopic}
+          setHistoriesRequest={setHistoriesRequest}
+          idTopic={id}
+        />
       </React.Fragment>
     );
   }

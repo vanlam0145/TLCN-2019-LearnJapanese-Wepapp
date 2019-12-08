@@ -19,6 +19,7 @@ import Grow from "@material-ui/core/Grow";
 import MenuList from "@material-ui/core/MenuList";
 import SearchIcon from "@material-ui/icons/Search";
 import Paper from "@material-ui/core/Paper";
+import ChallengesIcon from "@material-ui/icons/AccessibleForwardSharp"
 import Popper from "@material-ui/core/Popper";
 import TopicsIcon from "@material-ui/icons/MenuBook";
 import Speech from "speak-tts";
@@ -95,6 +96,10 @@ class index extends React.Component {
     const { history } = this.props;
     history.push("/gettopics");
   };
+  handleOpenChallenges=()=>{
+    const {history}=this.props
+    history.push("/challenges")
+  }
   onSpeak = () => {
     const speech = new Speech();
     speech.setLanguage("ja-JP");
@@ -112,7 +117,8 @@ class index extends React.Component {
       handleOpenAddCourses,
       handleOpenTopics,
       handleProfileMenuOpen,
-      handleToggle
+      handleToggle,
+      handleOpenChallenges
     } = this;
     const isTest=Boolean(this.state.anchorEl_Profile)
 
@@ -130,6 +136,12 @@ class index extends React.Component {
             <AddIcon />
           </IconButton>
           <p>Tạo khoá học</p>
+        </MenuItem>
+        <MenuItem onClick={handleOpenChallenges}>
+          <IconButton color="inherit">
+            <TopicsIcon />
+          </IconButton>
+          <p>Thử thách</p>
         </MenuItem>
         <MenuItem onClick={handleToggle}>
           <IconButton color="inherit">
@@ -249,6 +261,13 @@ class index extends React.Component {
                 >
                   <AddIcon />
                   &ensp; Tạo khoá học
+                </Button>
+                <Button
+                  className={classes.menuButton}
+                  onClick={handleOpenChallenges}
+                >
+                  <ChallengesIcon />
+                  &ensp; Thử thách
                 </Button>
                 <Button onClick={handleToggle} className={classes.menuButton}>
                   Alphabet {<ArrowDownIcon />}

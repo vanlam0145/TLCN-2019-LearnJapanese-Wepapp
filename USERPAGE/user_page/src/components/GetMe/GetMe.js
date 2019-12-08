@@ -200,7 +200,6 @@ class GetMe extends Component {
                 <IconButton
                   aria-label="Share"
                   onClick={() => openDialog("openSetQuestion")}
-                  disabled
                 >
                   <SetQuestionIcon />
                 </IconButton>

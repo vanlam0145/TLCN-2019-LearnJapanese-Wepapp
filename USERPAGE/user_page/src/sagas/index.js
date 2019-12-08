@@ -3,6 +3,7 @@ import signinSaga from "./SignInSaga";
 import getmeSaga from "./GetMeSaga";
 import homeSaga from "./HomeSaga";
 import coursesSaga from "./CoursesSaga";
+import challengesSaga from "./ChallengesSaga";
 import topicsSaga from "./TopicsSaga";
 import { all } from "redux-saga/effects";
 function* rootSaga() {
@@ -12,7 +13,8 @@ function* rootSaga() {
     getmeSaga(),
     homeSaga(),
     coursesSaga(),
-    topicsSaga()
+    topicsSaga(),
+    challengesSaga()
   ]);
 }
 export default rootSaga;

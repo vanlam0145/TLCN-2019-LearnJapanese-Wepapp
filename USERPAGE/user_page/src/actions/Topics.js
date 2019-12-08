@@ -59,3 +59,23 @@ export const learntopicError = error => {
     payload: error
   };
 };
+
+//Luu lich su
+export const setHistoriesRequest = data => {
+  return {
+    type: topicsConstants.SET_HISTORIES_REQUEST,
+    payload: data
+  };
+};
+export const setHistoriesSuccess = success => {
+  return {
+    type: topicsConstants.SET_HISTORIES_SUCCESS,
+    payload: success
+  };
+};
+export const setHistoriesError = error => {
+  return {
+    type: topicsConstants.SET_HISTORIES_ERROR,
+    payload: error
+  };
+};

@@ -38,7 +38,8 @@ class TopicDetail extends Component {
     showResult: 0,
     indexHover: false,
     indexAnswer: null,
-    isComplete: false
+    isComplete: false,
+    answers: []
   };
   onSpeak = word => {
     console.log(word);
@@ -88,13 +89,24 @@ class TopicDetail extends Component {
     // console.log("do dai: ", learnCourse[activeStepLearn]);
     if (learnTopic[activeStepLearn].answer_id === index) {
       if (activeStepLearn < learnTopic.length - 1) {
+        const object = {
+          _id: learnTopic[activeStepLearn].answers[index]._id,
+          correct: true
+        };
+        var data = [...this.state.answers];
+        data.push(object);
         this.setState({
           showResult: 1,
           indexHover: true,
           indexAnswer: index,
+          answers: data
         });
       } else {
         this.setState({ isComplete: true });
+        const history={topic: {topic: this.props.idTopic }, answers: this.state.answers}
+        const {setHistoriesRequest}=this.props
+        setHistoriesRequest(history)
+        //console.log("lich su gui ve: ", history)
       }
     } else {
       this.setState({
@@ -168,13 +180,13 @@ class TopicDetail extends Component {
             style={{
               display: "flex",
               justifyContent: "center",
-              alignContent: "center"
+              alignContent: "center",
+              flexWrap: "wrap"
             }}
           >
-            Bạn đã hoàn thành khoá học!
+            <Typography>Bạn đã hoàn thành khoá học!</Typography>
             <Button onClick={() => this.onResetLearn()}>Thử lại</Button>
           </div>
-          ;
         </React.Fragment>
       );
     }
@@ -228,8 +240,7 @@ class TopicDetail extends Component {
       xhtml = (
         <React.Fragment>
           <Box style={{ display: "flex", justifyContent: "center" }}>
-            <RightIcon style={{ color: "green" }} />
-            <Button onClick={() => this.handleNextLearn()}>Tiếp tục</Button>
+              <Button startIcon={<RightIcon style={{color: "green"}}/>} onClick={() => this.handleNextLearn()}>Tiếp tục</Button>
           </Box>
         </React.Fragment>
       );
@@ -420,7 +431,7 @@ class TopicDetail extends Component {
               <div
                 style={{
                   backgroundColor: "white",
-                  // height: "90%",
+                  height: "90%",
                   width: "90%"
                 }}
               >
