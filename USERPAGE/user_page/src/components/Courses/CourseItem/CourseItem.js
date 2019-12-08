@@ -14,7 +14,9 @@ import StylesCourseItem from './StylesCourseItem';
 
 class CourseItem extends Component {
   render() {
+
     const { course, classes, Courses, onDelete } = this.props;
+    const date = new Date(course.create_at);
     const length = course.contents.length;
     return (
       <React.Fragment>
@@ -26,7 +28,7 @@ class CourseItem extends Component {
             <CardHeader
               avatar={<Avatar src={Courses.courses.avatar}></Avatar>}
               title={"Người tạo: " + Courses.courses.username}
-              subheader={"Ngày tạo: " + `${course.create_at}`}
+              subheader={"Ngày tạo: " + `${date.toLocaleTimeString()} - ${date.toLocaleDateString()}`}
             />
             <CardMedia
               image="../../assets/loading.gif"

@@ -41,7 +41,6 @@ import SetQuestionIcon from "@material-ui/icons/ImportContacts";
 class GetMe extends Component {
   componentDidMount() {
     const { getmeRequest, getme } = this.props;
-    //console.log(getme);
     if (!getme.username) {
       getmeRequest();
     }
@@ -109,6 +108,8 @@ class GetMe extends Component {
       experience,
       histories
     } = getme;
+    const thu = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"]
+    const date = new Date(create_at);
     // console.log("getme: ", image);
     // console.log("touched username: ", touched.newUsername);
     // console.log("touched password: ", touched.password);
@@ -147,7 +148,7 @@ class GetMe extends Component {
                   </React.Fragment>
                 }
                 title={username}
-                subheader={create_at}
+                subheader={`${date.toLocaleTimeString()} - ${thu[date.getDay()]} - ${date.toLocaleDateString()}`}
               />
               <CardContent>
                 <Table className={classes.table} aria-label="simple table">
