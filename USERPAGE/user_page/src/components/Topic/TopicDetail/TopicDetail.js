@@ -171,7 +171,8 @@ class TopicDetail extends Component {
             style={{
               display: "flex",
               justifyContent: "center",
-              alignContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
               flexWrap: "wrap"
             }}
           >
@@ -421,7 +422,7 @@ class TopicDetail extends Component {
                 style={{
                   backgroundColor: "white",
                   height: "90%",
-                  width: "90%"
+                  width: "90%",
                 }}
               >
                 {this.renderExam()}

@@ -30,6 +30,7 @@ class CourseDetail extends Component {
     activeStep: 0,
     activeStepLearn: 0,
     showResult: 0,
+    isComplete: false,
     indexHover: false,
     indexAnswer: null,
 

@@ -182,20 +182,6 @@ class GetMe extends Component {
                         {sumQuestion} câu hỏi | {numberAnswer} câu trả lời
                     </TableCell>
                   </TableRow>
-                  <TableRow>
-                    <TableCell align="left">Cấp độ {level}</TableCell>
-                    <TableCell align="center">kinh nghiệm {experience}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="left">Lịch sử kiểm tra</TableCell>
-                    <TableCell align="center">0</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="left">Bộ câu hỏi</TableCell>
-                    <TableCell align="center">
-                      {sumQuestion} câu hỏi | {numberAnswer} câu trả lời
-                    </TableCell>
-                  </TableRow>
                 </TableBody>
               </Table>
             </CardContent>

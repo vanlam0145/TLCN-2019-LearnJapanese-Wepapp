@@ -48,7 +48,7 @@ class index extends React.Component {
     }));
   };
   handleProfileMenuClose = () => {
-    this.setState(state => ({ openProfile: false, anchorEl_Profile: null }));
+    this.setState(state => ({ openProfile: !state.openProfile, anchorEl_Profile: null }));
   };
   handleMenuClose = () => {
     this.setState({ anchorEl_Profile: null });
@@ -164,10 +164,11 @@ class index extends React.Component {
     );
     const renderProfile = (
       <Popper
-        open={isTest}
+        open={openProfile}
         anchorEl={this.state.anchorEl_Profile}
         transition
         disablePortal
+        style={{zIndex:"9999999"}}
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -207,6 +208,7 @@ class index extends React.Component {
         transition
         disablePortal
         placement="bottom"
+        style={{zIndex: "9999999"}}
       >
         {({ TransitionProps, placement }) => (
           <Grow {...TransitionProps} id="menu-list-grow">
