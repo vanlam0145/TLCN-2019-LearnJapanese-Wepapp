@@ -18,7 +18,8 @@ class AddCoursePage extends Component {
           { text: "", mean: "" },
           { text: "", mean: "" }
         ]
-      }
+      },
+      changeValue: false,
     };
   }
   onAddNewCard = () => {
@@ -79,11 +80,12 @@ class AddCoursePage extends Component {
       data: {
         ...this.state.data,
         content: data
-      }
+      },
+      changeValue: true
     });
   };
   onPress = (event, index) => {
-    if (event.key == "Enter") {
+    if (event.keyCode == 9 && this.state.changeValue) {
       const data = [...this.state.data.content]
       ggTranslae.translate(event.target.value, 'ja', 'vi', function (err, translation) {
         getTran(translation);
@@ -95,7 +97,8 @@ class AddCoursePage extends Component {
           data: {
             ...this.state.data,
             content: data
-          }
+          },
+          changeValue: false
         });
       }
     }
