@@ -51,9 +51,7 @@ const styles = theme => ({
     }
   },
   textHover: {
-    "&:hover": {
-      transform: "rotateX(180deg)"
-    },
+      transform: "rotateY(180deg)",
     position: "absolute",
     transition: "1s",
     backfaceVisibility: "hidden",

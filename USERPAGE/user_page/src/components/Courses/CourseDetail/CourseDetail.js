@@ -33,7 +33,7 @@ class CourseDetail extends Component {
     isComplete: false,
     indexHover: false,
     indexAnswer: null,
-
+    isRotate: false
   };
   speech = new Speech();
   onSpeak = word => {
@@ -49,6 +49,9 @@ class CourseDetail extends Component {
   };
   pauseSpeak = () => {
     this.speech.cancel()
+  }
+  onRotate=()=>{
+    this.setState(state=>({isRotate: !state.isRotate}))
   }
   checkAnswer = index => {
     const { learnCourse } = this.props;
@@ -285,15 +288,16 @@ class CourseDetail extends Component {
                       src={tutorialSteps[0].imgPath}
                       alt={tutorialSteps[0].label}
                     /> */}
-                    <div
-                      className={clsx(classes.textHover, classes.courseShow)}
+                    <div onClick={()=>this.onRotate()}
+                      className={`${classes.courseShow} ${this.state.isRotate===true?classes.textHover:""}`}
                     >
                       {this.renderText(contents)}
                     </div>
                     <div
+                      onClick={()=>this.onRotate()}
                       style={{
                         width: "50vh",
-                        backgroundColor: "red",
+                        backgroundColor: "rgb(92, 177, 39)",
                         height: "40vh",
                         display: "flex",
                         justifyContent: "center",
