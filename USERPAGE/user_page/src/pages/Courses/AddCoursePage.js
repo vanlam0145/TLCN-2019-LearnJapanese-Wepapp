@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 
 import * as addcourseActions from '../../actions/AddCourse';
 import AddCourse from '../../components/Courses/AddCourse/AddCourse';
-
+import ggTranslae from '../../helper/TranslateAPI/googleTranslate';
 class AddCoursePage extends Component {
   constructor(props) {
     super(props);
@@ -82,11 +82,29 @@ class AddCoursePage extends Component {
       }
     });
   };
+  onPress = (event, index) => {
+    if (event.key == "Enter") {
+      const data = [...this.state.data.content]
+      ggTranslae.translate(event.target.value, 'ja', 'vi', function (err, translation) {
+        getTran(translation);
+      });
+      const getTran = (translation) => {
+        data[index].mean = translation.translatedText.toString();
+        this.setState({
+          ...this.state,
+          data: {
+            ...this.state.data,
+            content: data
+          }
+        });
+      }
+    }
+  }
   render() {
     const { AddCourseValues, handleChange } = this.props;
     const { CourseName } = this.props.values;
     const { data } = this.state;
-    const { onChange, onHandleSubmit, onAddNewCard, onDeleteCard } = this;
+    const { onChange, onHandleSubmit, onAddNewCard, onDeleteCard, onPress } = this;
     return (
       <AddCourse
         onChange={onChange}
@@ -97,6 +115,7 @@ class AddCoursePage extends Component {
         handleChange={handleChange}
         onAddNewCard={onAddNewCard}
         onDeleteCard={onDeleteCard}
+        onPress={onPress}
       />
     );
   }

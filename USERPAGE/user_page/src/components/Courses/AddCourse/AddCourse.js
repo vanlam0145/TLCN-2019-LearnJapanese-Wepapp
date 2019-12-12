@@ -48,6 +48,7 @@ class AddCourse extends Component {
                     multiline
                     margin="normal"
                     onChange={e => this.props.onChange(e, index)}
+                    onKeyPress={e => this.props.onPress(e, index)}
                   />
                 </Box>
               </Grid>
