@@ -11,14 +11,27 @@ import IconButton from "@material-ui/core/IconButton";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import SpeakIcon from "@material-ui/icons/VolumeUp";
+import Dialog from "@material-ui/core/Dialog";
+import TextField from "@material-ui/core/TextField";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import Tooltip from "@material-ui/core/Tooltip";
+import ArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Box from "@material-ui/core/Box";
 import RightIcon from "@material-ui/icons/CheckCircle";
 import WrongIcon from "@material-ui/icons/Cancel";
 import StylesChallengeDetail from "./StylesChallengeDetail";
 
 class ChallengeDetail extends Component {
-  state = { showResult: 0, position: 0 };
+  state = { showResult: 0, position: 0, openExplanation: false };
+  onOpenExplanation = () => {
+    this.setState({ openExplanation: true });
+  };
+  onCloseExplanation = () => {
+    this.setState({ openExplanation: false });
+  };
   playMp3 = index => {
     const { ChallengeDetailReducer } = this.props;
     const { choice_1_voice, choice_2_voice } = ChallengeDetailReducer;
@@ -49,7 +62,12 @@ class ChallengeDetail extends Component {
               alignItems: "center"
             }}
           >
-            <RightIcon style={{ color: "green" }} />
+            <Tooltip title="xem giải thích chi tiết">
+              <IconButton onClick={() => this.onOpenExplanation()}>
+                <RightIcon style={{ color: "green" }} />
+                <ArrowDownIcon style={{ color: "green" }} />
+              </IconButton>
+            </Tooltip>
           </Box>
         </React.Fragment>
       );
@@ -101,7 +119,8 @@ class ChallengeDetail extends Component {
       choice_2,
       choice_2_voice,
       image,
-      question
+      question,
+      explanation
     } = ChallengeDetailReducer;
     if (question !== undefined) {
       console.log(Challenges);
@@ -136,6 +155,15 @@ class ChallengeDetail extends Component {
             <Button
               onClick={() => this.checkAnswer(1)}
               style={{ width: "80%", border: "1px solid #3e51b5" }}
+              className={`${
+                this.state.showResult === 1 && this.state.position === 1
+                  ? "animated flash"
+                  : ""
+              } ${
+                this.state.showResult === 2 && this.state.position === 1
+                  ? "animated shake"
+                  : ""
+              }`}
             >
               {choice_1}
             </Button>
@@ -156,6 +184,15 @@ class ChallengeDetail extends Component {
             <Button
               onClick={() => this.checkAnswer(2)}
               style={{ width: "80%", border: "1px solid #3e51b5" }}
+              className={`${
+                this.state.showResult === 1 && this.state.position === 2
+                  ? "animated flash"
+                  : ""
+              } ${
+                this.state.showResult === 2 && this.state.position === 2
+                  ? "animated shake"
+                  : ""
+              }`}
             >
               {choice_2}
             </Button>
@@ -167,6 +204,24 @@ class ChallengeDetail extends Component {
             </Tooltip>
           </Box>
         </Paper>
+        <Dialog
+          open={this.state.openExplanation}
+          onClose={this.onCloseExplanation}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Nội dung giải thích</DialogTitle>
+          <CardMedia component="img" src={image} />
+          <DialogContent>
+            <DialogContentText>
+              {explanation ? explanation.replace(/&quot;/g, '"') : ""}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={()=>this.onCloseExplanation()} color="primary">
+              Đóng
+            </Button>
+          </DialogActions>
+        </Dialog>
       </React.Fragment>
     );
   }
